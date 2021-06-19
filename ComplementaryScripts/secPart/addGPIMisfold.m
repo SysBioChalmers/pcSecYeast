@@ -21,7 +21,7 @@ if GPI > 0
     reaction{1}.rxnNames = sprintf('%s_GPImisfoldI_sec_Kar2p_complex',peptide);
     reaction{2}.rxnNames = sprintf('%s_refolding_er',peptide);
     reaction{3}.rxnNames = sprintf('%s_GPImisfoldII',peptide);
-    reaction{1}.eq = sprintf('%s[er] + %d ATP[er] + %d H2O[er] => %s_misf[er] + %d ADP[c] + %d H+[c] + %d phosphate[c]',peptide,Length,Length,peptide,Length,Length,Length);
+    reaction{1}.eq = sprintf('%s[er] + %d ATP[er] + %d H2O[er] => %s_misf[er] + %d ADP[er] + %d H+[er] + %d phosphate[er]',peptide,Length,Length,peptide,Length,Length,Length);
 
     reaction{2}.eq = sprintf('%s_misf[er] => %s[er]',peptide,peptide);
     reaction{3}.eq = sprintf('%s_misf[er] + %.15f H2O[er] => %s_misf_G1[er] + %.15f 6-O-2-O-alpha-D-mannosyl-(1-2)-{alpha-D-mannosyl-2-O-((2-aminoethyl)phosphoryl)-(1-2)-alpha-D-mannosyl-(1-6)-2-O-((2-aminoethyl)phosphoryl)-alpha-D-mannosyl-(1-4)-alpha-D-glucosaminyl}-O-inositol-P-ceramide C (C26)[er]',peptide,GPI,peptide,GPI);
@@ -65,13 +65,23 @@ if GPI > 0
 %     reaction{n+1}.rxnNames = sprintf('%s_dilution_misfolding_c',peptide_org);
 %     reaction{n+1}.eq = sprintf('%s_misfolding[c] => ',peptide_org);
 %     %misfolding retension cycle
-    reaction{n+1}.rxns = sprintf('%s_cycle_accumulation_sec_pdi1p_ero1p_complex',peptide);
-    reaction{n+1}.rxnNames = sprintf('%s_cycle_accumulation_sec_pdi1p_ero1p_complex',peptide);
-    reaction{n+1}.eq = sprintf('%s_misf[er] + %d glutathione[er] + %d oxygen[er] => %d hydrogen peroxide[er] + %d glutathione disulfide[er] + %s_misfolding_acc[er]',peptide,10,5,5,5,peptide);
+    if DSB > 0
+        reaction{n+1}.rxns = sprintf('%s_cycle_accumulation_sec_pdi1p_ero1p_complex',peptide);
+        reaction{n+1}.rxnNames = sprintf('%s_cycle_accumulation_sec_pdi1p_ero1p_complex',peptide);
+        reaction{n+1}.eq = sprintf('%s_misf[er] + %d glutathione[er] + %d oxygen[er] => %d hydrogen peroxide[er] + %d glutathione disulfide[er] + %s_misf2[er]',peptide,20*DSB,10*DSB,10*DSB,10*DSB,peptide);
+    else
+        reaction{n+1}.rxns = sprintf('%s_cycle_accumulation',peptide);
+        reaction{n+1}.rxnNames = sprintf('%s_cycle_accumulation',peptide);
+        reaction{n+1}.eq = sprintf('%s_misf[er] => %s_misf2[er]',peptide,peptide);
+    end
+    reaction{n+2}.rxns = sprintf('%s_cycle_accumulation_sec_acc_Kar2p_complex',peptide);
+    reaction{n+2}.rxnNames = sprintf('%s_cycle_accumulation_sec_acc_kar2p_complex',peptide);
+    reaction{n+2}.eq = sprintf('%s_misf2[er] + %d ATP[er] + %d H2O[er] => %s_misfolding_acc[er] + %d ADP[er] + %d H+[er] + %d phosphate[er]',peptide,10*Length,10*Length,peptide,10*Length,10*Length,10*Length);
+
     %misfolding dilution
-    reaction{n+2}.rxns = sprintf('%s_dilution_misfolding_er',peptide_org);
-    reaction{n+2}.rxnNames = sprintf('%s_dilution_misfolding_c',peptide);
-    reaction{n+2}.eq = sprintf('%s_misfolding_acc[er] => ',peptide);
+    reaction{n+3}.rxns = sprintf('%s_dilution_misfolding_er',peptide_org);
+    reaction{n+3}.rxnNames = sprintf('%s_dilution_misfolding_c',peptide);
+    reaction{n+3}.eq = sprintf('%s_misfolding_acc[er] => ',peptide);
     for i=1:length(reaction)
         if onlyrxns == 1
             rxns = [rxns;{reaction{i}.rxns}];
@@ -82,6 +92,10 @@ if GPI > 0
     end
     newModel = model;
     peptide_name = peptide;
+    if NG > 0
+    S = regexp(peptide_name, '_M9', 'split');
+    peptide_name = [S{1},'_M8'];
+    end
 else
     newModel = model;
     peptide_name = peptide;

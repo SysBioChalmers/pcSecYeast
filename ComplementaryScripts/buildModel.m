@@ -76,6 +76,9 @@ enzymedata = SimulateRxnKcatCoef(model,enzymedataSEC,enzymedata);
 enzymedataMachine = SimulateMachineParam(model);
 enzymedataMachine = calculateMW(enzymedataMachine,ProteinSequence,protein_info);
 
+  % Change kcats extremely low for original enzymes
+    lowkcat = 3600;
+    enzymedata.kcat(enzymedata.kcat< lowkcat) = lowkcat;
 %% Add dummy complex reactions
 % Dummy complex is assumed to be a part of metabolic protein pool.
 % Note that the dummy complex is synthesized or diluted in the unit of
@@ -99,7 +102,7 @@ model = changeRxnBounds(model,refold_list,0,'b');
 f_modeled_protein = estimateModeledprotein(model);
 
 f_modeled_protein = f_modeled_protein + missingsecP_ratio; % small amount of protein has been added into ER
-f_modeled_protein = 0.81
+f_modeled_protein = 0.81;
 f_modeled_protein = round(f_modeled_protein,2); %g/gProtein
 % Change the biomass equation
 model = changeBiomass(model,f_modeled_protein,'r_4041','s_3717[c]');

@@ -21,7 +21,8 @@ for i = 1:length(SecComplex)
         NG = enzymedata.proteinPST(Idx(Idx~=0),strcmp(enzymedata.proteinPSTInfo,'NG'));
         OG = enzymedata.proteinPST(Idx(Idx~=0),strcmp(enzymedata.proteinPSTInfo,'OG'));
         GPI = enzymedata.proteinPST(Idx(Idx~=0),strcmp(enzymedata.proteinPSTInfo,'GPI'));
-        if contains(coefref_tmp,'proteinLength')
+        proteinLength = enzymedata.proteinLength(Idx(Idx~=0));
+        if strcmp(coefref_tmp,'proteinLength')
             enzymedata.rxnscoef = [enzymedata.rxnscoef;enzymedata.proteinLength(Idx(Idx~=0))/467]; % bionumber 105224 average length
             enzymedata.rxns = [enzymedata.rxns;rxnList(Idx~=0)];
         elseif strcmp(coefref_tmp,'ProteinMW')

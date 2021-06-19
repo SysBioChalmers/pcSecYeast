@@ -103,7 +103,8 @@ for i = 1:length(enzymedataSEC.enzyme)
 end
 
 %  ERAD should be only 30%  of total protein
-E_sum(strcmp(SecComplex_func,'ERAD'),:) = E_sum(strcmp(SecComplex_func,'ERAD'),:)*0.045/(0.1+0.045);
+u = 0.4;
+E_sum(strcmp(SecComplex_func,'ERAD'),:) = E_sum(strcmp(SecComplex_func,'ERAD'),:)*0.045/(u+0.045);
 
 % sum(V) <= Vsyn = kcat[E]
 % (mu + kdeq)*sum([E]) <= kcat[E0]
@@ -118,7 +119,7 @@ end
 
 
 kcat_tmp = (E_sum./E0).* enzymedataSEC.subunit_stoichiometry(:,1:length(E_sum(1,:)));
-u = 0.4;
+
 %enzymedataSEC.kcat = median(kcat_tmp,2,'omitnan')*(u+0.045);
 enzymedataSEC.kcat = min(kcat_tmp,[],2)*(u+0.045);
 enzymedataSEC.proteins = strrep(setdiff(unique(enzymedataSEC.subunit(:)),''),'_','-'); % get all proteins involved in the sec pathway
@@ -143,7 +144,7 @@ missingprotein = missingprotein(Idx2~=0);
 [~,Idx2] = ismember(missingprotein,strrep(protein_info(:,2),'-','_'));
 
 mean = sum(pax_abundance(Idx).*cell2mat(protein_info(Idx2,3:9)))/sum(pax_abundance(Idx));
-mean_length = sum(pax_abundance(Idx).*cell2mat(protein_info(Idx2,13)))/sum(pax_abundance(Idx));
+mean_length = sum(pax_abundance(Idx).*cell2mat(protein_info(Idx2,12)))/sum(pax_abundance(Idx));
 meanprotein_info = mean/mean_length*423;% 4.23 is the unmodeled protein secretory length*100 to save unnesaacy GTP and ATP
 
 %% unmodeled protein secretory ratio

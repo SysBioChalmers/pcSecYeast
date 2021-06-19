@@ -20,8 +20,8 @@ reaction{5}.rxnNames = sprintf('%s Signal peptidase',peptide);
 reaction{6}.rxnNames = sprintf('%s_export sp to cytosol',peptide);
 
 reaction{1}.eq = sprintf('%s_peptide[c] => %s_tanslocate_1[c]',peptide,peptide);
-reaction{2} .eq= sprintf('%s_tanslocate_1[c] => %s_tanslocate_2[c]',peptide,peptide);
-reaction{3} .eq= sprintf('%s_tanslocate_2[c] + 2 GTP[c] + 2 H2O[c] => %s_tanslocate_3[c] + 2 GDP[c] + 2 phosphate[c] + H+[c]',peptide,peptide);
-reaction{4} .eq= sprintf('%s_tanslocate_2[c] + 2 GTP[c] + 2 H2O[c] => %s_tanslocate_3[c] + 2 GDP[c] + 2 phosphate[c] + H+[c]',peptide,peptide);
-reaction{5} .eq= sprintf('%s_tanslocate_3[c] + H2O[c] => %s[er] + %s_sp[er]',peptide,peptide,peptide);
+reaction{2}.eq= sprintf('%s_tanslocate_1[c] => %s_tanslocate_2[c]',peptide,peptide);
+reaction{3}.eq= sprintf('%s_tanslocate_2[c] + 2 GTP[c] + 2 H2O[c] => %s_tanslocate_3[c] + 2 GDP[c] + 2 phosphate[c] + H+[c]',peptide,peptide);
+reaction{4}.eq= sprintf('%s_tanslocate_2[c] + 2 GTP[c] + 2 H2O[c] => %s_tanslocate_3[c] + 2 GDP[c] + 2 phosphate[c] + H+[c]',peptide,peptide);
+reaction{5}.eq= sprintf('%s_tanslocate_3[c] + H2O[c] => %s[er] + %s_sp[er]',peptide,peptide,peptide);
 reaction{6}.eq = sprintf('%s_sp[er] => %s_sp[c]',peptide,peptide);

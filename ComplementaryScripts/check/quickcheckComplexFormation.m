@@ -14,7 +14,7 @@ complex_list = model.rxns(contains(model.rxns,'complex_formation'));
  
  %quick check for the complex degradation
  results.degradation = cell(length(complex_list),2);
- complex_list = model.rxns(contains(model.rxns,'misfolding_degradation'));
+ complex_list = model.rxns(contains(model.rxns,'degradation_misfolding'));
   for i = 1:length(complex_list)
      model = changeObjective(model,complex_list(i),1);
      sol=optimizeCbModel(model,'max');

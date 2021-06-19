@@ -11,7 +11,7 @@ geneError = [];
     if geneidx ~= 0 && cell2mat(protein_info(geneidx,3)) == 1
         [~,i] =ismember(gene,protein_info(:,2));
         peptide = cell2mat(protein_info(i,2));
-        seq = cell2mat(protein_info(i,12));
+        seq = cell2mat(protein_info(i,11));
         SP=cell2mat(protein_info(i,4));
         DSB=cell2mat(protein_info(i,5));
         NG=cell2mat(protein_info(i,6));
@@ -24,7 +24,7 @@ geneError = [];
         compartment = S(1);
         peptide = strrep(peptide,'-','_');
         % The first step is to translocate the translated peptide into [ER]
-        [model,rxns{1}] = translocate(model,peptide,seq,SP,NG,DSB,GPI,onlyrxns);
+        [model,rxns{1}] = translocate(model,peptide,length(seq),SP,NG,DSB,GPI,onlyrxns);
         % Modify the transported peptide with DSB, GPI, NG, and OG
         [model, peptide_name,rxns{2}] = addDSB(model,peptide,length(seq),DSB,onlyrxns);
         [model, peptide_name,rxns{3}] = addGPI(model,peptide_name,length(seq),GPI,onlyrxns);

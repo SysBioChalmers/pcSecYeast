@@ -67,17 +67,17 @@ kcat_list = enzymedata.kcat(met_enzyme_idx);
 % newidx = contains(enzyme_list,'new_r_');
 % expandidx = contains(enzyme_list,'withoutcofactor');
 % lowkcat = quantile(kcat_list(~(newidx|expandidx)),0.01,1);
-lowkcat = 3600;
+%lowkcat = 3600;
 
 for i=1:numel(enzyme_list)
     enzyme = enzyme_list{i};
   	kcat = kcat_list(i);
 
-%     % Change kcats extremely low for original enzymes
+    % Change kcats extremely low for original enzymes
 %     if ismember(enzyme,enzyme_list(~newidx))
-        if kcat < lowkcat
-            kcat = lowkcat;
-        end
+%         if kcat < lowkcat
+%             kcat = lowkcat;
+%         end
 %     end
 
 

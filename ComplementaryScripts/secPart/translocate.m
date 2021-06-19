@@ -12,7 +12,7 @@ if SP==1
     end
 elseif (SP==0)&&((NG>0)||(DSB>0)||(GPI>0))
     
-    Reaction=Post_Translation_translocation(peptide,round(length(seq)/40));
+    Reaction=Post_Translation_translocation(peptide,round(seq/40));
     for i=1:4
         if onlyrxns == 1
             rxns = [rxns;{Reaction{i}.rxns}];

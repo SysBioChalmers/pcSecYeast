@@ -26,7 +26,7 @@ for i = 1:length(geneList)
     % can find this gene && through ER && SP == 1
     if geneidx ~= 0 && cell2mat(protein_info(geneidx,3)) == 1 && cell2mat(protein_info(geneidx,4)) == 1
         % SP degradation
-        SP = cell2mat(protein_info(geneidx,11));
+        SP = cell2mat(protein_info(geneidx,14));
         seq = cell2mat(seq);
         SP_seq = seq(1:SP);
         [sum,energy] = countAA_deg(SP_seq,aa_list,e_list,false);

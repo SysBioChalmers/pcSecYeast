@@ -1,4 +1,4 @@
-function [newModel,peptide_name,rxns] = tansportToFinal(model,peptide,peptide_org,compartment,onlyrxns)
+function [newModel,peptide_name,rxns] = transportToFinal(model,peptide,peptide_org,compartment,onlyrxns)
 rxns = [];
 if strcmp(compartment,'er')==1 || strcmp(compartment,'erm') ==1
     Reaction = transportFromGolgiToER(peptide,peptide_org,compartment);
