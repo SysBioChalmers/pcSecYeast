@@ -11,7 +11,7 @@ elseif strcmp(compartment,'ce')==1
 elseif  strcmp(compartment,'e')==1
     Reaction = transportFromGolgiToS(peptide,peptide_org);
 else
-    Reaction = transportFromGolgiToOther(model,peptide,peptide_org,compartment);
+    Reaction = transportFromGolgiToOther(peptide,peptide_org,compartment);
 end 
 if exist('Reaction','var')
     for i=1:length(Reaction)

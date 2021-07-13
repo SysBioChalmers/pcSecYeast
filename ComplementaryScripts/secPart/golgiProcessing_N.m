@@ -1,13 +1,13 @@
-function [newModel,peptide_name,rxns] = golgiProcessing_N(model,peptide,Length_total,NG,onlyrxns)
+function [newModel,peptide_name,rxns] = golgiProcessing_N(model,peptide,peptide_org,Length_total,NG,onlyrxns)
 rxns = [];
 if NG >0
     Length = Length_total/40;
     
     
-    reaction{1}.rxns = sprintf('%s_GLNG_Golgi_N_linked_glycosylation_I_sec_Och1p_complex',peptide);
-    reaction{2}.rxns = sprintf('%s_GLNG_Golgi_N_linked_glycosylation_II_sec_MPOLI_complex',peptide);
-    reaction{3}.rxns = sprintf('%s_GLNG_Golgi_N_linked_glycosylation_III_sec_MPoLII_complex',peptide);
-    reaction{4}.rxns = sprintf('%s_GLNG_Golgi_N_linked_glycosylation_II_sec_Mnn1p_Mnn2p_Mnn5p_complex',peptide);
+    reaction{1}.rxns = sprintf('%s_GLNG_Golgi_N_linked_glycosylation_I_sec_Och1p_complex',peptide_org);
+    reaction{2}.rxns = sprintf('%s_GLNG_Golgi_N_linked_glycosylation_II_sec_MPOLI_complex',peptide_org);
+    reaction{3}.rxns = sprintf('%s_GLNG_Golgi_N_linked_glycosylation_III_sec_MPoLII_complex',peptide_org);
+    reaction{4}.rxns = sprintf('%s_GLNG_Golgi_N_linked_glycosylation_II_sec_Mnn1p_Mnn2p_Mnn5p_complex',peptide_org);
     
     reaction{1}.rxnNames = sprintf('%s_GLNG_Golgi_N_linked_glycosylation_I_sec_Och1p_complex',peptide);
     reaction{2}.rxnNames = sprintf('%s_GLNG_Golgi_N_linked_glycosylation_II_sec_MPOLI_complex',peptide);

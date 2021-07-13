@@ -1,14 +1,14 @@
-function [newModel,peptide_name,rxns] = addNG(model,peptide,Length_total,NG,onlyrxns)
+function [newModel,peptide_name,rxns] = addNG(model,peptide,peptide_org,Length_total,NG,onlyrxns)
 rxns = [];
 if NG >0
     Length = Length_total/40;
     
     
-    reaction{1}.rxns = sprintf('%s_ERNG_NG_sec_OSTC_complex',peptide);
-    reaction{2}.rxns = sprintf('%s_ERNG_FLI_NG_sec_Cwh41p_complex',peptide);
-    reaction{3}.rxns = sprintf('%s_ERNG_FLII_NG_sec_Rot2p_complex',peptide);
-    reaction{4}.rxns = sprintf('%s_ERNG_FLIII_NG_sec_Rot2p_complex',peptide);
-    reaction{5}.rxns = sprintf('%s_ERNG_FLIV_NG_sec_Mns1p_complex',peptide);
+    reaction{1}.rxns = sprintf('%s_ERNG_NG_sec_OSTC_complex',peptide_org);
+    reaction{2}.rxns = sprintf('%s_ERNG_FLI_NG_sec_Cwh41p_complex',peptide_org);
+    reaction{3}.rxns = sprintf('%s_ERNG_FLII_NG_sec_Rot2p_complex',peptide_org);
+    reaction{4}.rxns = sprintf('%s_ERNG_FLIII_NG_sec_Rot2p_complex',peptide_org);
+    reaction{5}.rxns = sprintf('%s_ERNG_FLIV_NG_sec_Mns1p_complex',peptide_org);
 
      reaction{1}.rxnNames = sprintf('%s_ERNG_NG_OSTC_complex ER N-glycosylation',peptide);
     reaction{2}.rxnNames = sprintf('%s_ERNG_FLI_NG_Cwh41p_complex ER Glycan trimming I',peptide);

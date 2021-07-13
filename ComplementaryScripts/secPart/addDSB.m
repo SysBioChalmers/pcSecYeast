@@ -1,10 +1,10 @@
-function [newModel,peptide_name,rxns] = addDSB(model,peptide,Length_total,DSB,onlyrxns)
+function [newModel,peptide_name,rxns] = addDSB(model,peptide,peptide_org,Length_total,DSB,onlyrxns)
 rxns = [];
 if DSB >0
     Length = Length_total/40;
-    reaction{1}.rxns = sprintf('%s_DSB_sec_BIP_NEFS_complex',peptide);
-    reaction{2}.rxns = sprintf('%s_DSB_PDI_II_sec_PDI1_ERV2_Ero1p_complex',peptide);
-    reaction{3}.rxns = sprintf('%s_DSB_PDI_III_sec_PDI1_ERV2_Ero1p_complex',peptide);
+    reaction{1}.rxns = sprintf('%s_DSB_sec_BIP_NEFS_complex',peptide_org);
+    reaction{2}.rxns = sprintf('%s_DSB_PDI_II_sec_PDI1_ERV2_Ero1p_complex',peptide_org);
+    reaction{3}.rxns = sprintf('%s_DSB_PDI_III_sec_PDI1_ERV2_Ero1p_complex',peptide_org);
 
 
     reaction{1}.rxnNames = sprintf('%s_DSB_PDI_BIP_NEFS_complex Formation of folding complex with Kar2ATP and disulfide bond formation',peptide);

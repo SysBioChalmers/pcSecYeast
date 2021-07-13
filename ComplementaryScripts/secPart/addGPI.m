@@ -1,16 +1,16 @@
-function [newModel peptide_name,rxns] = addGPI(model,peptide,Length_total,GPI,onlyrxns)
+function [newModel peptide_name,rxns] = addGPI(model,peptide,peptide_org,Length_total,GPI,onlyrxns)
 rxns = [];
 if GPI >0
     if GPI > 1
         GPI = 1;
     end
-    reaction{1}.rxns = sprintf('%s_GPIRI_sec_GPIR_complex',peptide);
-    reaction{2}.rxns = sprintf('%s_GPIRII_sec_Bst1p_complex',peptide);
-    reaction{3}.rxns = sprintf('%s_GPIRIII_sec_Per1p_complex',peptide);
-    reaction{4}.rxns = sprintf('%s_GPIRIV_sec_Gup1p_complex',peptide);
-    reaction{5}.rxns = sprintf('%s_GPIRV_sec_Cwh43p_Gpi7p_Mcd4p_complex',peptide);
-    reaction{6}.rxns = sprintf('%s_GPIRVI_sec_Ted1p_complex',peptide);
-    reaction{7}.rxns = sprintf('%s_GPIRIB_sec_GPIR_complex',peptide);
+    reaction{1}.rxns = sprintf('%s_GPIRI_sec_GPIR_complex',peptide_org);
+    reaction{2}.rxns = sprintf('%s_GPIRII_sec_Bst1p_complex',peptide_org);
+    reaction{3}.rxns = sprintf('%s_GPIRIII_sec_Per1p_complex',peptide_org);
+    reaction{4}.rxns = sprintf('%s_GPIRIV_sec_Gup1p_complex',peptide_org);
+    reaction{5}.rxns = sprintf('%s_GPIRV_sec_Cwh43p_Gpi7p_Mcd4p_complex',peptide_org);
+    reaction{6}.rxns = sprintf('%s_GPIRVI_sec_Ted1p_complex',peptide_org);
+    reaction{7}.rxns = sprintf('%s_GPIRIB_sec_GPIR_complex',peptide_org);
 
     reaction{1}.rxnNames = sprintf('%s_GPI_the luminal part of the protein is attached to a GPI anchor via a phosphoethanolaminethe luminal part of the protein is attached to a GPI anchor via a phosphoethanolamine_GPIR_complex',peptide);
     reaction{2}.rxnNames = sprintf('%s_GPI_removes the acyl chain from the inositol_Bst1p',peptide);

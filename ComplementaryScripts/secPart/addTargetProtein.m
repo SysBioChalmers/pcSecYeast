@@ -1,19 +1,22 @@
-function [model,enzymedata_TP] =addTargetProtein(model,TP,new)
+function [model,enzymedata_TP] =addTargetProtein(model,TP,new,fakeProteinInfo)
 % new means create a new rxn instead of merging with the original protein
 % synthesis rxn
 if nargin < 3
     new = false;
+    fakeProteinInfo = [];
 end
 % this function is to add
 load('ProteinSequence.mat');
-[~,~,proteins]=xlsread('TargetProtein.xlsx','protein');
 [~,~,protein_info] = xlsread('TargetProtein.xlsx','protein_info');
+TPall.seq = protein_info(2:end,11);
+TPall.id = protein_info(2:end,2);
 complex_info = protein_info(2:end,[1,10,15:16]);
 protein_info = protein_info(2:end,1:14);
 [~,~,protein_info2] = xlsread('Protein_Information.xlsx');
 protein_info2 = protein_info2(2:end,1:14);
 protein_info2(:,1) = protein_info2(:,2);
-if new
+
+if new % means that new protein is added with prefix new even thought it is a native protein
     protein_info2(:,1) = strcat(protein_info2(:,1),'new');
     protein_info2(:,2) = strcat(protein_info2(:,2),'new');
     ProteinSequence.id = strcat(ProteinSequence.id,'new');
@@ -24,9 +27,16 @@ if new
 end
 protein_info = [protein_info;protein_info2];
 
-ProteinSequence.id(end+1:end+length(proteins(:,2))) = proteins(:,2);
-ProteinSequence.seq(end+1:end+length(proteins(:,2))) = proteins(:,9);
-ProteinSequence.fullseq(end+1:end+length(proteins(:,2))) = proteins(:,9);
+ProteinSequence.id(end+1:end+length(TPall.id)) = TPall.id;
+ProteinSequence.seq(end+1:end+length(TPall.id)) = TPall.seq;
+ProteinSequence.fullseq(end+1:end+length(TPall.id)) = TPall.seq;
+
+if ~isempty(fakeProteinInfo)
+    protein_info = [protein_info;fakeProteinInfo];
+    ProteinSequence.id(end+1:end+length(fakeProteinInfo(:,2))) = fakeProteinInfo(:,2);
+    ProteinSequence.seq(end+1:end+length(fakeProteinInfo(:,2))) = fakeProteinInfo(:,11);
+    ProteinSequence.fullseq(end+1:end+length(fakeProteinInfo(:,2))) = fakeProteinInfo(:,11);
+end
 
 Target = protein_info(ismember(protein_info(:,1),TP),2); % find all proteins in the complex
 model = addfolding(model,Target,protein_info);% add folding process for those peptide xx_peptide --> xx_folding

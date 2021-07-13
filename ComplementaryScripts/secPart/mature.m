@@ -1,6 +1,6 @@
-function [newModel,peptide_name,rxns] = mature(model,peptide,onlyrxns)
+function [newModel,peptide_name,rxns] = mature(model,peptide,peptide_org,onlyrxns)
 rxns = [];
-reaction{1}.rxns = sprintf('%s_Mature',peptide);
+reaction{1}.rxns = sprintf('%s_Mature',peptide_org);
 reaction{1}.rxnNames = sprintf('%s Mature',peptide);
 reaction{1}.eq = sprintf('%s[g] => %s_mature[g]',peptide,peptide);
 if onlyrxns == 1

@@ -49,7 +49,7 @@ if NG > 0 && GPI == 0
 
         reaction{5}.eq = sprintf('%s_M7_misf[er] => %s_M7_misf_G1[er]',peptidenew,peptidenew);
         reaction{6}.eq = sprintf('%s_M7_misf_G1[er] => %s_M7_misf_G2[er]',peptidenew,peptidenew);
-        reaction{7}.eq = sprintf('%s_M7_misf_G2[er] + 4 Ubiquitin_for_Transfer[c] => %s_M7_misf_G3[c] + 4 Ubiquitin[c]',peptidenew,peptidenew);
+        reaction{7}.eq = sprintf('%s_M7_misf_G2[er] + 8 Ubiquitin_for_Transfer[c] => %s_M7_misf_G3[c] + 8 Ubiquitin[c]',peptidenew,peptidenew);
         reaction{8}.eq = sprintf('%s_M7_misf_G3[c] => %s_misfolding[c] + %d D-mannose[er] + %d N-acetyl-alpha-D-glucosamine 1-phosphate[c]',peptidenew,peptidenew,man,nac);
     elseif Trans > 0
         reaction{5}.rxns = sprintf('%s_ERADMIII_sec_Yos9p_Hrd1p_Hrd3p_complex',peptidenew);
@@ -65,7 +65,7 @@ if NG > 0 && GPI == 0
 
         reaction{5}.eq = sprintf('%s_M7_misf[er] => %s_M7_misf_G1[er]',peptidenew,peptidenew);
         reaction{6}.eq = sprintf('%s_M7_misf_G1[er] => %s_M7_misf_G2[er]',peptidenew,peptidenew);
-        reaction{7}.eq = sprintf('%s_M7_misf_G2[er] + 4 Ubiquitin_for_Transfer[c] => %s_M7_misf_G3[c] + 4 Ubiquitin[c]',peptidenew,peptidenew);
+        reaction{7}.eq = sprintf('%s_M7_misf_G2[er] + 8 Ubiquitin_for_Transfer[c] => %s_M7_misf_G3[c] + 8 Ubiquitin[c]',peptidenew,peptidenew);
         reaction{8}.eq = sprintf('%s_M7_misf_G3[c] => %s_misfolding[c] + %d D-mannose[er] + %d N-acetyl-alpha-D-glucosamine 1-phosphate[c]',peptidenew,peptide_org,man,nac);
     else
         reaction{5}.rxns = sprintf('%s_ERADCIII_sec_Cue1p_Ubc6p_Doa10p_Ubc7p_Cdc48p_Ubx2p_complex',peptidenew);
@@ -78,7 +78,7 @@ if NG > 0 && GPI == 0
 
 
         reaction{5}.eq = sprintf('%s_M7_misf[er] => %s_M7_misf_G1[er]',peptidenew,peptidenew);
-        reaction{6}.eq = sprintf('%s_M7_misf_G1[er] + 4 Ubiquitin_for_Transfer[c] => %s_M7_misf_G2[c] + 4 Ubiquitin[c]',peptidenew,peptidenew);
+        reaction{6}.eq = sprintf('%s_M7_misf_G1[er] + 8 Ubiquitin_for_Transfer[c] => %s_M7_misf_G2[c] + 8 Ubiquitin[c]',peptidenew,peptidenew);
         reaction{7}.eq = sprintf('%s_M7_misf_G2[c] => %s_misfolding[c] + %d D-mannose[er] + %d N-acetyl-alpha-D-glucosamine 1-phosphate[c]',peptidenew,peptide_org,man,nac);
     end
 

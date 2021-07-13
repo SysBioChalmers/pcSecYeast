@@ -25,6 +25,8 @@ if GPI > 0
 
     reaction{2}.eq = sprintf('%s_misf[er] => %s[er]',peptide,peptide);
     reaction{3}.eq = sprintf('%s_misf[er] + %.15f H2O[er] => %s_misf_G1[er] + %.15f 6-O-2-O-alpha-D-mannosyl-(1-2)-{alpha-D-mannosyl-2-O-((2-aminoethyl)phosphoryl)-(1-2)-alpha-D-mannosyl-(1-6)-2-O-((2-aminoethyl)phosphoryl)-alpha-D-mannosyl-(1-4)-alpha-D-glucosaminyl}-O-inositol-P-ceramide C (C26)[er]',peptide,GPI,peptide,GPI);
+
+    
     if DSB > 0
         reaction{4}.rxns = sprintf('%s_GPImisfoldIIIA_sec_Pdi1p_complex',peptide);
         reaction{4}.rxnNames = sprintf('%s_GPImisfoldIIIA_Pdi1p_complex',peptide);

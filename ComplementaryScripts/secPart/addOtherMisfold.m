@@ -35,7 +35,7 @@ if NG == 0 && GPI == 0
     reaction{5}.rxnNames = sprintf('%s_ERADegradation4',peptide);
 
     reaction{4}.eq = sprintf('%s_misf_G1[er] => %s_misf_G2[er]',peptide,peptide);
-    reaction{5}.eq = sprintf('%s_misf_G2[er] + 4 Ubiquitin_for_Transfer[c] => %s_misf_G3[c] + 4 Ubiquitin[c]',peptide,peptide);
+    reaction{5}.eq = sprintf('%s_misf_G2[er] + 8 Ubiquitin_for_Transfer[c] => %s_misf_G3[c] + 8 Ubiquitin[c]',peptide,peptide);
    if OG > 0
         reaction{6}.rxns = sprintf('%s_ERADegradation5_sec_Dsk2p_Rad23p_Png1p_Uba1p_complex',peptide);
         reaction{6}.rxnNames = sprintf('%s_ERADegradation5A_sec_Dsk2p_Rad23p_Png1p_Uba1p_complex',peptide);
