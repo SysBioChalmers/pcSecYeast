@@ -46,9 +46,9 @@ for i = 1:length(enzymedata.enzyme)
 end
 
 % define parameter
-enzymedata.kcat(1,1) = 30*60*60; % /h 107785 bionumber % 372763 ribosome rate withgrowth rate
-enzymedata.kcat(2,1) = 2000*60; % /h  106538 bionumber
-enzymedata.kcat(3,1) = 5*60; % /h
+enzymedata.kcat(1,1) = 30*60*60; % /h 107785 bionumber % 372763 ribosome rate withgrowth rate aa/h
+enzymedata.kcat(2,1) = 2000*60; % /h  106538 bionumber ribosome/h
+enzymedata.kcat(3,1) = 1*60; % /h
 
 enzymedata.proteins = strrep(setdiff(unique(enzymedata.subunit(:)),''),'_','-');
 

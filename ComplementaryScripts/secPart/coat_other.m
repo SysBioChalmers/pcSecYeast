@@ -1,11 +1,11 @@
 function [newModel,peptide_name,rxns] = coat_other(model,peptide,peptide_org,GPI,trans,onlyrxns)
 rxns = [];
 if trans == 0 && GPI == 0
-    reaction{1}.rxns = sprintf('%s_COPII_normal_ERGLD_sec_Sec12p_Sar1p_Sec23p_Sec24p_Erv29p_complex',peptide_org);
-    reaction{2}.rxns = sprintf('%s_COPII_common_ERGLA_sec_Sec13p_Sec31p_Sec16p_Sed4p_Sec5p_Sec17p_complex',peptide_org);
-    reaction{3}.rxns = sprintf('%s_COPII_common_ERGLA_sec_Ypt1p_Uso1p_bug1p_Bet3p_Bet5p_Trs20p_Trs23p_Trs31p_Trs33p_complex',peptide_org);
+    reaction{1}.rxns = sprintf('%s_COPII_normal_ERGL1A_sec_Sec12p_Sar1p_Sec23p_Sec24p_Erv29p_Bet1p_Bos1p_complex',peptide_org);
+    reaction{2}.rxns = sprintf('%s_COPII_ERGL_sec_Sec13p_Sec31p_Sec16p_Sed4p_Sec5p_Sec17p_complex',peptide_org);
+    reaction{3}.rxns = sprintf('%s_COPII_ERGL_sec_Ypt1p_Uso1p_bug1p_Bet3p_Bet5p_Trs20p_Trs23p_Trs31p_Trs33p_complex',peptide_org);
     
-    reaction{1}.rxnNames =  sprintf('%s_COPII_normal_ERGLD_Sec12p_Sar1p_Sec23p_Sec24p_Erv29p Pre budding complex forming for soluble proteins',peptide);
+    reaction{1}.rxnNames =  sprintf('%s_s_COPII_normal_ERGL1A_sec_Sec12p_Sar1p_Sec23p_Sec24p_Erv29p_Bet1p_Bos1p_complex Pre budding complex forming for soluble proteins',peptide);
     reaction{2}.rxnNames =  sprintf('%s_COPII_common_ERGLA_Sec12p_Sar1p_Sec23p_Sec24p_Erv29p COPII formation',peptide);
     reaction{3}.rxnNames = sprintf('%s_COPII_common_ERGLA_Ypt1p_Uso1p_bug1p_Bet3p_Bet5p_Trs20p_Trs23p_Trs31p_Trs33p COPII fusion',peptide);
     

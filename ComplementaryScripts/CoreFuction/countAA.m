@@ -24,8 +24,8 @@ sum.num(b) = sum.num(b) + 1;
 % energy
 energy = struct();
 seqlen = length(seq);
-total_atp = 2*seqlen + 2;
-total_gtp = 2*seqlen + 4;
+total_atp = 2*seqlen + 3;
+total_gtp = 2*seqlen + 3;
 total_h2o = total_atp + total_gtp;
 total_h = total_atp + total_gtp;
 total_pi = total_atp + total_gtp; 

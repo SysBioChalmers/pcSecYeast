@@ -5,6 +5,9 @@ if nargin < 3
     new = false;
     fakeProteinInfo = [];
 end
+if nargin < 4
+    fakeProteinInfo = [];
+end
 % this function is to add
 load('ProteinSequence.mat');
 [~,~,protein_info] = xlsread('TargetProtein.xlsx','protein_info');

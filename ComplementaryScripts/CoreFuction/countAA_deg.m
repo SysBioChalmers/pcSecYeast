@@ -26,5 +26,5 @@ energy = struct();
 seqlen = length(seq);
 energy.subs_deg = e_list.subs(1:2);
 energy.prod_deg = e_list.prod([1,2,4]);
-energy.subs_degnum = repmat(floor(1.3*seqlen),2,1);
-energy.prod_degnum = repmat(floor(1.3*seqlen),3,1);
+energy.subs_degnum = repmat(floor(0.25*seqlen),2,1); % 1ATP/aa
+energy.prod_degnum = repmat(floor(0.25*seqlen),3,1); % 1ATP/aa

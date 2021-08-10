@@ -57,12 +57,14 @@ enzymedata = calculateMW(enzymedata,ProteinSequence,protein_info);
 enzymedataSEC.enzyme = SecComplex;
 enzymedataSEC.comp = SecComplex_comp;
 enzymedataSEC.coefref = SecComplex_coef;
-a.rxns = rxnList;
+tmp = enzymedataSEC.coefref(strcmp(enzymedataSEC.enzyme,'sec_pdi1p_ero1p_complex')|strcmp(enzymedataSEC.enzyme,'sec_acc_Kar2p_complex')) % keep out accumulation rxn since it is not normal in cell
+enzymedataSEC.coefref(strcmp(enzymedataSEC.enzyme,'sec_pdi1p_ero1p_complex')|strcmp(enzymedataSEC.enzyme,'sec_acc_Kar2p_complex')) = {'0*proteinLength'}; % keep out accumulation rxn since it is not normal in cell
+a.rxns = rxnList; %  rxnlist for all proteins
 enzymedata = SimulateRxnKcatCoef(a,enzymedataSEC,enzymedata);
-[~,idx] = ismember(enzymedata.rxns,rxnList);
+[~,idx] = ismember(enzymedata.rxns,rxnList); % index the rxns with the sec complex
 matchingList(idx(idx~=0),4) = num2cell(enzymedata.rxnscoef(idx~=0)); % coef
 clear enzymedata
-
+enzymedataSEC.coefref(strcmp(enzymedataSEC.enzyme,'sec_pdi1p_ero1p_complex')|strcmp(enzymedataSEC.enzyme,'sec_acc_Kar2p_complex')) = tmp;
 
 idx_tmp = contains(model.rxns,'_complex_formation');
 s_tmp = model.S(:,idx_tmp);
@@ -102,9 +104,9 @@ for i = 1:length(enzymedataSEC.enzyme)
 
 end
 
-%  ERAD should be only 30%  of total protein
-u = 0.4;
-E_sum(strcmp(SecComplex_func,'ERAD'),:) = E_sum(strcmp(SecComplex_func,'ERAD'),:)*0.045/(u+0.045);
+%  ERAD should be only 10%  of total protein
+u = 0.1;
+E_sum(strcmp(SecComplex_func,'ERAD'),:) = E_sum(strcmp(SecComplex_func,'ERAD'),:)*0.1;
 
 % sum(V) <= Vsyn = kcat[E]
 % (mu + kdeq)*sum([E]) <= kcat[E0]
@@ -120,8 +122,8 @@ end
 
 kcat_tmp = (E_sum./E0).* enzymedataSEC.subunit_stoichiometry(:,1:length(E_sum(1,:)));
 
-%enzymedataSEC.kcat = median(kcat_tmp,2,'omitnan')*(u+0.045);
-enzymedataSEC.kcat = min(kcat_tmp,[],2)*(u+0.045);
+enzymedataSEC.kcat = median(kcat_tmp,2,'omitnan')*(u+0.01);
+%enzymedataSEC.kcat = min(kcat_tmp,[],2)*(u+0.042);
 enzymedataSEC.proteins = strrep(setdiff(unique(enzymedataSEC.subunit(:)),''),'_','-'); % get all proteins involved in the sec pathway
 
 % calculate modeled_protein coverage

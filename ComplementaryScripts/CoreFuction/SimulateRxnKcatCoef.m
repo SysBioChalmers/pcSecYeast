@@ -33,8 +33,5 @@ for i = 1:length(SecComplex)
             enzymedata.rxns = [enzymedata.rxns;rxnList(Idx~=0)];
         end
     end
-    if i == 53
-        i
-    end
 end
 end

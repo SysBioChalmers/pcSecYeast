@@ -10,13 +10,11 @@ if NG >0
     reaction{4}.rxns = sprintf('%s_ERNG_FLIII_NG_sec_Rot2p_complex',peptide_org);
     reaction{5}.rxns = sprintf('%s_ERNG_FLIV_NG_sec_Mns1p_complex',peptide_org);
 
-     reaction{1}.rxnNames = sprintf('%s_ERNG_NG_OSTC_complex ER N-glycosylation',peptide);
+    reaction{1}.rxnNames = sprintf('%s_ERNG_NG_OSTC_complex ER N-glycosylation',peptide);
     reaction{2}.rxnNames = sprintf('%s_ERNG_FLI_NG_Cwh41p_complex ER Glycan trimming I',peptide);
     reaction{3}.rxnNames = sprintf('%s_ERNG_FLII_NG_Rot2p_complex ER Glycan trimming II',peptide);
     reaction{4}.rxnNames = sprintf('%s_ERNG_FLIII_NG_Rot2p_complex ER Glycan trimming III',peptide);
     reaction{5}.rxnNames = sprintf('%s_ERNG_FLIV_NG_Mns1p_complex ER demanosylation I',peptide);
-    
-
     
     reaction{1}.eq = sprintf('%s[er] + %d Glucose(3)Mannose(9)GlucoseNAc(2)-PP-dolichol[er] => %s_G3M9[er] + %d dolichyl phosphate[er]',peptide,NG,peptide,NG);
     reaction{2} .eq=  sprintf('%s_G3M9[er] + %d H2O[er] => %s_G2M9[er] + %d D-glucose[er]',peptide,NG,peptide,NG);
