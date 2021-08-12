@@ -35,10 +35,10 @@ model = model_split;
 clear model_updated model_split;
 
 %% reformulate the Metabolic part
-load('ProteinSequence.mat');
+load('ProteinSequence.mat'); % this refers all protein id and sequence in S.ce
 % Add complex formation reactions based on protein stoichiometry
 % promiscuous = findPromiscuous(model_split);
-load('Protein_stoichiometry.mat');% obtained from pdbe see Data for detail info
+load('Protein_stoichiometry.mat');% obtained from pdbe see Supplementary Methods for detail info
 model = addComplexRxns(model,Protein_stoichiometry,protein_info,ProteinSequence);
 
 %% reformulate the Sec part
@@ -67,6 +67,10 @@ enzymedata.kdeg(1:end) = 0.1;% using 0.1 for now
 % Calculate molecular weight for each enzyme
 enzymedata = calculateMW(enzymedata,ProteinSequence,protein_info);
 
+% match kapp in the dataset % optinal
+load('kmax.mat') % which is downloaded from the github https://github.com/SysBioChalmers/Yeast_kapp/blob/main/kmax.mat
+enzymedata = matchkappToKcat(enzymedata,kapp4);
+
 % which is based on Sec protein abundance and the sec machinery abundance
 [enzymedataSEC,modeled_ratio,meanprotein_info,missingsecP_ratio] = SimulateSecParam(model,protein_info,ProteinSequence);
 enzymedataSEC = calculateMW(enzymedataSEC,ProteinSequence,protein_info);
@@ -76,9 +80,9 @@ enzymedata = SimulateRxnKcatCoef(model,enzymedataSEC,enzymedata);
 enzymedataMachine = SimulateMachineParam(model);
 enzymedataMachine = calculateMW(enzymedataMachine,ProteinSequence,protein_info);
 
-  % Change kcats extremely low for original enzymes
-    lowkcat = 3600;
-    enzymedata.kcat(enzymedata.kcat< lowkcat) = lowkcat;
+%   % Change kcats extremely low for original enzymes no need to do this
+%     lowkcat = 3600;
+%     enzymedata.kcat(enzymedata.kcat< lowkcat) = lowkcat;
 %% Add dummy complex reactions
 % Dummy complex is assumed to be a part of metabolic protein pool.
 % Note that the dummy complex is synthesized or diluted in the unit of
