@@ -9,10 +9,10 @@ initcluster
 % https://www.jbc.org/action/showPdf?pii=S0021-9258%2819%2973030-0
 mkdir('SimulateGlcCon')
 cd SimulateGlcCon
-res_glc = [1E-6 1E-5 1E-4 1E-3 1E-2 0.1 0.2 0.5 1 2 3 4 5 10 20 50 100 150 500];
+res_glc = [1E-3 5E-3 1E-2 5E-2 0.1 0.15 0.2 0.25 0.3 0.35 0.4 0.45 0.5 1 10 20 30 40 50 100];
 Km_hxt = [110;1.5;34;9.3;2.5]; % bionumber 110954 110739 PMID 2482015 10336421 https://doi.org/10.1101/2020.06.22.165753 table
-hxt = {'YHR094C';'YMR011W';'YDR345C';'YHR092C';'YDR342C'};
-kcatmax = [1012 53 479 155 197]*3600; % calculated from Vmax based on the assumption that the kca tfor the hxt2 is 53/s and hxt7 is 200/s
+hxt = {'YHR094C';'YMR011W';'YDR345C';'YHR092C';'YDR342C'}; % HXT1,HXT2,HXT3,HXT4,HXT7
+kcatmax = [1012 53 479 155 197]*3600; % calculated from Vmax based on the assumption that the kcat for the hxt2 is 53/s and hxt7 is 200/s
 hxtrxnID = {'r_1166_10_complex';'r_1166_17_complex';'r_1166_5_complex';'r_1166_9_complex';'r_1166_3_complex'}; % glucose transporter rxn
 % load model and param
 load('enzymedata.mat')
@@ -47,8 +47,7 @@ f_erm = 0.008;
 factor_k = 1;
 % r_4041 is pseudo_biomass_rxn_id in the GEM
 % s_3717[c] is protein id
-lowkcat = 3600;
-enzymedata.kcat(enzymedata.kcat< lowkcat) = lowkcat;
+
 
 enzymedata.kcat(contains(enzymedata.enzyme,'r_1166')) = 0;
 
@@ -69,14 +68,14 @@ while factor_mu_high-factor_mu_low > 0.001
     
     model_tmp = changeRxnBounds(model,'r_2111',mu,'b');
     name = ['GlcCon_',num2str(res_glc(i)),'_',num2str(mu*100)];
-    fileName = writeLP(model_tmp,mu,f,f_mito,f_unmodelER,f_erm,osenseStr,rxnID,enzymedata_all,factor_k,name);
+    fileName = writeLP(model_tmp,mu,f,f_unmodelER,osenseStr,rxnID,enzymedata_all,factor_k,name,[4,5]);
     %command = sprintf('/home/f/feiranl/tools/soplex-4.0.0/build/bin/soplex -s0 -g5 -t3000 -f1e-17 -o1e-17 -x -q -c --int:readmode=1 --int:solvemode=2 --int:checkmode=2 --real:fpfeastol=1e-3 --real:fpopttol=1e-3 %s > %s.out %s',fileName,fileName);
     command = sprintf('/cephyr/users/feiranl/Hebbe/tools/build/bin/soplex -s0 -g5 -t3000 -f1e-17 -o1e-17 -x -q -c --int:readmode=1 --int:solvemode=2 --int:checkmode=2 --real:fpfeastol=1e-3 --real:fpopttol=1e-3 %s > %s.out %s',fileName,fileName);
     system(command,'-echo');
     fileName_out = [fileName,'.out'];
     [~,solME_status,solME_full] = readSoplexResult(fileName_out,model_tmp);
     
-    if strcmp(solME_status,'optimal')
+    if strcmp(solME_status,'optimal') && ~isempty(solME_full)
         factor_mu_low = factor_mu_mid;
         flux_tmp = solME_full;
     else

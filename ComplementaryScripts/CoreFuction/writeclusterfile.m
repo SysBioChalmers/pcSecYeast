@@ -43,7 +43,7 @@ end
 num = 505;
 k = 1:100:505;
 for i = 1:length(k)
-    subfileName = ['sub_proteincost',num2str(k(i)),'.sh'];
+    subfileName = ['sub_Rd_proteincost',num2str(k(i)),'.sh'];
     fptr = fopen(subfileName,'w');
     fprintf(fptr,'#!/bin/bash\n');
     %fprintf(fptr,'#SBATCH -A SNIC2020-7-19\n');
@@ -58,16 +58,16 @@ for i = 1:length(k)
     fprintf(fptr,['i=',num2str(k(i)),'\n']);
     if i ~= length(k)
         for m = 1:10
-            fprintf(fptr,['a',num2str(m),'=$i+' num2str(20*(m-1)) '\n']);
-            fprintf(fptr,['b',num2str(m),'=$i+' num2str(20*m-1) '\n']);
+            fprintf(fptr,['a',num2str(m),'=$i+' num2str(10*(m-1)) '\n']);
+            fprintf(fptr,['b',num2str(m),'=$i+' num2str(10*m-1) '\n']);
         end
         for m = 1:10
             fprintf(fptr,['matlab -nodesktop -singleCompThread -r "ReadProteinCostResult($a',num2str(m),',$b',num2str(m),')" &\n']);
         end
     else
         for m = 1:num-k(i)+1
-            fprintf(fptr,['a',num2str(m),'=$i+' num2str(20*(m-1)) '\n']);
-            fprintf(fptr,['b',num2str(m),'=$i+' num2str(20*m-1) '\n']);
+            fprintf(fptr,['a',num2str(m),'=$i+' num2str(10*(m-1)) '\n']);
+            fprintf(fptr,['b',num2str(m),'=$i+' num2str(10*m-1) '\n']);
         end
         for m = 1:num-k(i)+1
             fprintf(fptr,['matlab -nodesktop -singleCompThread -r "ReadProteinCostResult($a',num2str(m),',$b',num2str(m),')" &\n']);
@@ -141,8 +141,8 @@ end
 
 %% FakeTP
 %% Protein cost
-num = 300;
-k = 1:100:300;
+num = 1112;
+k = 1:100:1112;
 for i = 1:length(k)
     subfileName = ['sub_FTP',num2str(k(i)),'.sh'];
     fptr = fopen(subfileName,'w');
@@ -182,14 +182,14 @@ for i = 1:length(k)
 end
 
 %% Protein cost FakeTP
-num = 300;
-k = 1:50:300;
+num = 1112;
+k = 1:50:1112;
 for i = 1:length(k)
     subfileName = ['sub_FTP_res',num2str(k(i)),'.sh'];
     fptr = fopen(subfileName,'w');
     fprintf(fptr,'#!/bin/bash\n');
     %fprintf(fptr,'#SBATCH -A SNIC2020-7-19\n');
-    fprintf(fptr,'#SBATCH -A snic2021-22-16\n');
+    fprintf(fptr,'#SBATCH -A snic2021-22-21\n');
     %fprintf(fptr,'#SBATCH -A C3SE2021-1-16\n');
     fprintf(fptr,'#SBATCH -n 20\n');
     fprintf(fptr,'#SBATCH -o out.txt\n');
@@ -202,11 +202,11 @@ for i = 1:length(k)
     if i ~= length(k)
             fprintf(fptr,['a=' num2str(50*(i-1)+1) '\n']);
             fprintf(fptr,['b=' num2str(50*i) '\n']);
-            fprintf(fptr,'matlab -nodesktop -singleCompThread -r ReadFakeTPres(a,b)');
+            fprintf(fptr,'matlab -nodesktop -singleCompThread -r "ReadFakeTPres($a,$b)"');
     else
           fprintf(fptr,['a=' num2str(50*(i-1)+1) '\n']);
             fprintf(fptr,['b=' num2str(num) '\n']);
-            fprintf(fptr,'matlab -nodesktop -singleCompThread -r ReadFakeTPres(a,b)');
+            fprintf(fptr,'matlab -nodesktop -singleCompThread -r "ReadFakeTPres($a,$b)"');
     end
     fclose(fptr);
 end

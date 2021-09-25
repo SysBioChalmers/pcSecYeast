@@ -106,7 +106,7 @@ model = changeRxnBounds(model,refold_list,0,'b');
 f_modeled_protein = estimateModeledprotein(model);
 
 f_modeled_protein = f_modeled_protein + missingsecP_ratio; % small amount of protein has been added into ER
-f_modeled_protein = 0.81;
+f_modeled_protein = 0.7;
 f_modeled_protein = round(f_modeled_protein,2); %g/gProtein
 % Change the biomass equation
 model = changeBiomass(model,f_modeled_protein,'r_4041','s_3717[c]');

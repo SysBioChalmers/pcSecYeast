@@ -66,11 +66,11 @@ end
    elseif Trans > 0 && (strcmp(compartment,'er')||strcmp(compartment,'erm')) %ERADM
             
         reaction{6}.rxns = sprintf('%s_ERADM_sec_Cue1p_Ubc6p_Ubc7p_Hrd1p_Hrd3p_Der1p_complex',peptide_org);
-        reaction{6}.rxnNames = sprintf('%s_Survaliancecplx formation of misfoled protein_Yos9p_Hrd1p_Hrd3p',peptide);
+        reaction{6}.rxnNames = sprintf('%s_sec_Cue1p_Ubc6p_Ubc7p_Hrd1p_Hrd3p_Der1p_complex',peptide);
         reaction{6}.eq = sprintf('%s_misf_G4[er] => %s_misf_G5[er]',peptide,peptide);
                     
         reaction{7}.rxns = sprintf('%s_ERADM_sec_Sbh1p_Sss1p_Ssh1p_Cdc48p_Ubx2p_Ufd1p_Npl4p_complex',peptide_org);
-        reaction{7}.rxnNames = sprintf('%s_Survaliancecplx formation of misfoled protein_Yos9p_Hrd1p_Hrd3p',peptide);
+        reaction{7}.rxnNames = sprintf('%s_ERADM_sec_Sbh1p_Sss1p_Ssh1p_Cdc48p_Ubx2p_Ufd1p_Npl4p_complex',peptide);
         reaction{7}.eq = sprintf('%s_misf_G5[er] + 8 Ubiquitin_for_Transfer[c] => %s_misf_G6[c] + 8 Ubiquitin[c]',peptide,peptide);
    else % ERADL
              

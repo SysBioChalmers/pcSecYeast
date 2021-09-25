@@ -18,9 +18,8 @@ save('fluxes_Crabtree.mat','fluxes');
 cd ../
 
 %% TP1
-TP = {'Amylase';'Insulin';'HSA';'Hemoglobincomplex';'Humantransferin';'BGL';'PHO';'Rancomplex';'HBsAg';'HGCSF'};
+TP = {'Amylase';'Insulin';'HSA';'Hemoglobincomplex';'Humantransferin';'BGL';'PHO';'HGCSF'};
 load('pcSecYeast.mat');
-mkdir FluxesTP1
 cd SimulateTP1res/;
 file = dir('*.out');
 filename = {file.name};
@@ -38,7 +37,7 @@ for i = 1:length(TP)
             fluxes = [fluxes zeros(length(model.rxns),1)];
         end
     end
-    save(['../FluxesTP1/fluxes_',TP{i},'.mat'],'fluxes');
+    save(['fluxes_',TP{i},'.mat'],'fluxes');
 end
 cd ../
 
@@ -104,4 +103,23 @@ filename = {file.name};
 
 cd ../
 
+%% FakeTP
+
+load('pcSecYeast.mat');
+cd SimulateFakeTPres/;
+file = dir('*.out');
+filename = {file.name};
+maxTP = [];
+for j = 1:length(filename)
+    [sol_obj,sol_status,~] = readSoplexResult(filename{j},model);
+    if strcmp(sol_status,'optimal')
+        maxTP = [maxTP sol_obj];
+    else
+        maxTP = [maxTP 0];
+    end
+end
+idx = find(maxTP~=0);
+filename = filename(idx);
+maxTP = maxTP(idx);
+save('res_maxTP.mat','maxTP');
 
