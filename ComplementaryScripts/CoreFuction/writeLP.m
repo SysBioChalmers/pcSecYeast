@@ -268,7 +268,9 @@ fprintf(fptr,'CPD: %s - %.15f X%d = 0\n',eq,coef_syn,id_syn);
 rxnID=sprintf('Mach_Ribosome_complex_formation');
 id_syn=find(ismember(model.rxns,rxnID));
 %kcat_ribo = enzymedataMachine.kcat(ismember(enzymedataMachine.enzyme,'Ribosome'));
-kcat_ribo = 2.40E+01*mu/(0.443253968+mu)*3600; 
+kcat_ribo = 2.40E+01*mu/(0.443253968+mu)*3600;  %this one
+%kcat_ribo = 2.95E+01*mu/(0.618350415+mu)*3600; % this one is made up tp
+% kcat_ribo = 2.40E+01*0.35/(0.443253968+0.35)*3600
 %kcat_ribo = 3.09E+01*mu/(0.626149132+mu)*3600; 
 
 
@@ -336,7 +338,7 @@ for i = 1:length(misfold_list)
 
 end
 
-%% er machinery protein
+%% sec machinery protein
 if ismember(4,extraconstraintnum)
 dil_rxns = model.rxns(contains(model.rxns,'complex_dilution') & contains(model.rxns,enzymedata.enzyme(sec_enzyme_idx)));
 for i = 1:length(dil_rxns)
@@ -362,7 +364,7 @@ for i = 1:length(dil_rxns)
 	end
 end
 
-fprintf(fptr,'CtotERMachin: %s <= %.15f\n',eq,mu*0.0174); % unmodeled part in the fraction eliminate only the unmodeled protein part in the biomass equation
+fprintf(fptr,'CtotSECMachin: %s <= %.15f\n',eq,mu*0.0244); %0.053 from the proteome data
 
 end
 %% erm constaint
@@ -397,8 +399,102 @@ end
 fprintf(fptr,'CtotERM: %s <= %.15f\n',eq,mu*0.008); % 1.74% from the proteome data
 end
 
-%% Glc constaint
+%% sec61 translocator constraint
 if ismember(6,extraconstraintnum)
+translocator = {'YLR378C','YBR283C','YIL030C','YOL013C'}; % SEC61 SSH1 DOA10 HRD1
+% 'YIL170W' is not in the model
+[~,idx1] = ismember(translocator,enzymedata.proteins);
+complexidx1 = enzymedata.enzyme(find(sum(enzymedata.enzymeSubunitMatrix(:,idx1),2))); % index the complex which contains those erm protein as subunits
+[~,idx2] = ismember(complexidx1,enzymedata.enzyme);
+matrix = enzymedata.enzymeSubunitMatrix(idx2,idx1);
+matrix = (matrix.*enzymedata.proteinMWs(idx1)')./1000;
+for i = 1:length(complexidx1)
+    complex = complexidx1(i);
+    rxn_id = strcat(complex,'_dilution');
+    %rxn_id = strrep(rxn_id,'_complex_complex_','_complex_'); % fix the naming issue introduced by the sec complex naming
+    idx = find(strcmp(model.rxns,rxn_id));
+        if mod(i,50) == 0
+            sep = newline;
+        else
+            sep = '';
+        end
+        
+        coeff = sum(matrix(i,:));
+        if i == 1
+            eq = sprintf('%.15f X%d',coeff,idx);
+        else
+            eq = sprintf('%s + %.15f X%d%c',eq,coeff,idx,sep);
+        end
+end
+
+fprintf(fptr,'CtotTransLoc: %s <= %.15f\n',eq,mu*5.08e-4); % from the proteome data
+end
+
+%% ERAD constaint
+if ismember(7,extraconstraintnum)
+ERAD_protein = {'YJL034W','YCL043C','YHR204W','YCL043C','YMR264W','YER100W','YMR022W','YDR057W','YLR207W','YOL013C','YBR201W','YML029W','YMR264W','YER100W','YIL030C','YMR022W','YER087C-B','YDR086C','YBR283C','YML013W','YDL126C','YGR048W','YBR170C','YMR276W','YEL037C','YPL096W','YKL210W','YCL043C','YML130C','YJL034W','YMR264W','YER100W','YMR022W','YLR207W','YOL013C','YBR201W','YMR276W','YEL037C','YKL210W'};
+% 'YIL170W' is not in the model
+[~,idx1] = ismember(ERAD_protein,enzymedata.proteins);
+complexidx1 = enzymedata.enzyme(find(sum(enzymedata.enzymeSubunitMatrix(:,idx1),2))); % index the complex which contains those erm protein as subunits
+[~,idx2] = ismember(complexidx1,enzymedata.enzyme);
+matrix = enzymedata.enzymeSubunitMatrix(idx2,idx1);
+matrix = (matrix.*enzymedata.proteinMWs(idx1)')./1000;
+for i = 1:length(complexidx1)
+    complex = complexidx1(i);
+    rxn_id = strcat(complex,'_dilution');
+    %rxn_id = strrep(rxn_id,'_complex_complex_','_complex_'); % fix the naming issue introduced by the sec complex naming
+    idx = find(strcmp(model.rxns,rxn_id));
+        if mod(i,50) == 0
+            sep = newline;
+        else
+            sep = '';
+        end
+        
+        coeff = sum(matrix(i,:));
+        if i == 1
+            eq = sprintf('%.15f X%d',coeff,idx);
+        else
+            eq = sprintf('%s + %.15f X%d%c',eq,coeff,idx,sep);
+        end
+end
+
+fprintf(fptr,'CtotERAD: %s <= %.15f\n',eq,mu*0.0125); %  2.7% from the proteome data
+end
+
+%% ER volume
+if ismember(8,extraconstraintnum)
+ERprotein = enzymedata.proteins(strcmp(enzymedata.proteinLoc,'er'));
+ERprotein = unique(ERprotein);
+% 'YIL170W' is not in the model
+[~,idx1] = ismember(ERprotein,enzymedata.proteins);
+complexidx1 = enzymedata.enzyme(find(sum(enzymedata.enzymeSubunitMatrix(:,idx1),2))); % index the complex which contains those erm protein as subunits
+[~,idx2] = ismember(complexidx1,enzymedata.enzyme);
+matrix = enzymedata.enzymeSubunitMatrix(idx2,idx1);
+matrix = (matrix.*enzymedata.proteinMWs(idx1)')./1000;
+for i = 1:length(complexidx1)
+    complex = complexidx1(i);
+    rxn_id = strcat(complex,'_dilution');
+    %rxn_id = strrep(rxn_id,'_complex_complex_','_complex_'); % fix the naming issue introduced by the sec complex naming
+    idx = find(strcmp(model.rxns,rxn_id));
+        if mod(i,50) == 0
+            sep = newline;
+        else
+            sep = '';
+        end
+        
+        coeff = sum(matrix(i,:));
+        if i == 1
+            eq = sprintf('%.15f X%d',coeff,idx);
+        else
+            eq = sprintf('%s + %.15f X%d%c',eq,coeff,idx,sep);
+        end
+end
+
+fprintf(fptr,'CtotERP: %s <= %.15f\n',eq,mu*0.0786); % 0.1708 from the proteome data
+end
+
+%% Glc constaint
+if ismember(9,extraconstraintnum)
 HXTs = {'YHR094C';'YFL011W';'YOL156W';'YEL069C';'YNL318C';'YDL245C';'YJR158W';'YNR072W';'YMR011W';'YDR345C';'YHR092C';'YHR096C';'YDR343C';'YDR342C';'YJL214W';'YJL219W'};
 % 'YIL170W' is not in the model
 [~,idx1] = ismember(HXTs,enzymedata.proteins);
@@ -428,36 +524,6 @@ end
 fprintf(fptr,'CtotHXT: %s <= %.15f\n',eq,mu*0.0042); % from the proteome data
 end
 
-%% sec61 translocator constraint
-if ismember(7,extraconstraintnum)
-translocator = {'YLR378C','YBR283C','YIL030C','YOL013C'}; % SEC61 SSH1 DOA10 HRD1
-% 'YIL170W' is not in the model
-[~,idx1] = ismember(translocator,enzymedata.proteins);
-complexidx1 = enzymedata.enzyme(find(sum(enzymedata.enzymeSubunitMatrix(:,idx1),2))); % index the complex which contains those erm protein as subunits
-[~,idx2] = ismember(complexidx1,enzymedata.enzyme);
-matrix = enzymedata.enzymeSubunitMatrix(idx2,idx1);
-matrix = (matrix.*enzymedata.proteinMWs(idx1)')./1000;
-for i = 1:length(complexidx1)
-    complex = complexidx1(i);
-    rxn_id = strcat(complex,'_dilution');
-    %rxn_id = strrep(rxn_id,'_complex_complex_','_complex_'); % fix the naming issue introduced by the sec complex naming
-    idx = find(strcmp(model.rxns,rxn_id));
-        if mod(i,50) == 0
-            sep = newline;
-        else
-            sep = '';
-        end
-        
-        coeff = sum(matrix(i,:));
-        if i == 1
-            eq = sprintf('%.15f X%d',coeff,idx);
-        else
-            eq = sprintf('%s + %.15f X%d%c',eq,coeff,idx,sep);
-        end
-end
-
-fprintf(fptr,'CtotHXT: %s <= %.15f\n',eq,mu*5.08e-4); % from the proteome data
-end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Set lower and upper bounds.
 

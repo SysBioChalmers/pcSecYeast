@@ -76,7 +76,7 @@ for i = 1:length(k)
     fprintf(fptr,'wait;\n');
     fclose(fptr);
 end
-%% glc con
+%% glc con for fig 2
 num = 20;
 for i = 1:num
     subfileName = ['sub_glc',num2str(i),'.sh'];
@@ -96,7 +96,7 @@ for i = 1:num
     fclose(fptr);
 end
 
-%% CPY
+%% CPY % for fig 3c
 TPrate = linspace(3.08E-7,1.9250e-04,6);
 misP = [0.1:0.2:1,1];
 order = [1,1;1,2;1,3;1,4;1,5;2,1;2,2;2,3;2,4;2,5;3,1;3,2;3,3;3,4;3,5;4,1;4,2;4,3;4,4;4,5;5,1;5,2;5,3;5,4;5,5;1,6;2,6;3,6;4,6;5,6;6,6;6,1;6,2;6,2;6,4;6,5];
@@ -104,7 +104,7 @@ for i = 1:length(order(:,1))
     subfileName = ['sub_CPY_SCE61_',num2str(i),'.sh'];
     fptr = fopen(subfileName,'w');
     fprintf(fptr,'#!/bin/bash\n');
-    %fprintf(fptr,'#SBATCH -A snic2021-22-21\n');
+    %fprintf(fptr,'#SBATCH -A snic2021-22-16\n');
     fprintf(fptr,'#SBATCH -A C3SE2021-1-16\n');
     fprintf(fptr,'#SBATCH -n 20\n');
     fprintf(fptr,'#SBATCH -o out.txt\n');
@@ -113,11 +113,37 @@ for i = 1:length(order(:,1))
     fprintf(fptr,'#SBATCH --mail-type=end\n');
     %fprintf(fptr,'module load MATLAB GMP CMake\n');
     fprintf(fptr,'module load MATLAB GCCcore/10.2.0 GMP CMake/3.18.4\n');
-    fprintf(fptr,['matlab -nodesktop -singleCompThread -r "SimulateCPY(',num2str(TPrate(order(i,1))),',',num2str(misP(order(i,2))),',5,1)"']);
+    fprintf(fptr,['matlab -nodesktop -singleCompThread -r "SimulateCPY(',num2str(TPrate(order(i,1))),',',num2str(misP(order(i,2))),',5,0)"']);
     fclose(fptr);
 end
 
-%% CPY_test
+%% CPY_Para for fig Sx
+TPrate = linspace(3.08E-7,1.54e-04,6);
+misP = [0:0.3:1];
+order = [1,1;1,2;1,3;1,4;2,1;2,2;2,3;2,4;3,1;3,2;3,3;3,4;4,1;4,2;4,3;4,4;5,1;5,2;5,3;5,4;6,1;6,2;6,3;6,4];
+for j = [0,4,5,7,8] %4 means total er constraint, 5 means total erm constraint, 6 means total retro-tranloc constraint, 7 means total ERAD constraint
+    for i = 1:length(order(:,1))
+    subfileName = ['sub_CPY_Para_',num2str(i),'_',num2str(j),'.sh'];
+    fptr = fopen(subfileName,'w');
+    fprintf(fptr,'#!/bin/bash\n');
+    %fprintf(fptr,'#SBATCH -A snic2021-22-21\n');
+    fprintf(fptr,'#SBATCH -A C3SE2021-1-16\n');
+    fprintf(fptr,'#SBATCH -n 10\n');
+    fprintf(fptr,'#SBATCH -o out.txt\n');
+    fprintf(fptr,'#SBATCH -t 0-5:00:00\n');
+    fprintf(fptr,'#SBATCH --mail-user=feiranl@chalmers.se\n');
+    fprintf(fptr,'#SBATCH --mail-type=end\n');
+    %fprintf(fptr,'module load MATLAB GMP CMake\n');
+    fprintf(fptr,'module load MATLAB GCCcore/10.2.0 GMP CMake/3.18.4\n');
+    extraconstraint = i;
+    fprintf(fptr,'module load MATLAB GCCcore/10.2.0 GMP CMake/3.18.4\n');
+    fprintf(fptr,['matlab -nodesktop -singleCompThread -r "SimulateCPY_Para(',num2str(TPrate(order(i,1))),',',num2str(misP(order(i,2))),',5,0,',num2str(j),')"']);
+  
+    fclose(fptr);
+    end
+end
+
+%% CPY_test % For Fig 3b
 TPrate = 2.85e-06;
 misP = [0,0.5,1];
 fold = [5,10,20];
