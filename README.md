@@ -1,6 +1,11 @@
 # pcSecYeast: The proteome constrained genome scale secretory model of _Saccharomyces cerevisiae_
 
 
+<p align="center">
+  <img  src="doc/logo.png" width = "800">
+</p>
+
+
 * Brief Model Description:
 
 This repository contains the current consensus consensus proteome constrained genome scale secretory model of _Saccharomyces cerevisiae_, which expands the metabolic model with protein translation, post-translational modifiaction and secretion process.
