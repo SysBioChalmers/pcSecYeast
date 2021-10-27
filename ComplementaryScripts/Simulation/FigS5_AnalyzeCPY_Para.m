@@ -1,4 +1,4 @@
-cd SimulateCPY_Para_res
+cd SimulateCPY_Para_res/
 load('enzymedata.mat')
 load('enzymedataMachine.mat')
 load('enzymedataSEC.mat')
@@ -13,42 +13,6 @@ misPAll = [0:0.3:1];
 TPrate = linspace(3.08E-7,3.85e-04,6);
 misP = [0:0.3:1];
 
-
-for i = 1:5
-    for j = 2:6
-        for m = 1:4
-            name = ['Simulation_dilutionYMR297W_',num2str(round(TPrate(j)*1E6,3)),'_mis',num2str(misPAll(m)*10),'_*_5_cons',num2str(extracons(i)),'accauto.lp.out'];
-            file = dir(name);
-            filename = {file.name};
-            filename = strrep(filename,['Simulation_dilutionYMR297W_',num2str(round(TPrate(j)*1E6,3)),'_mis',num2str(misPAll(m)*10),'_'],'');
-            filename = strrep(filename,['_5_cons',num2str(extracons(i)),'accauto.lp.out'],'');
-            mu = str2double(filename);
-            mu = sort(mu);
-            mu = mu([floor(length(mu)/2),floor(length(mu)/2)+1]);
-            fileName_out = ['Simulation_dilutionYMR297W_',num2str(round(TPrate(j)*1E6,3)),'_mis',num2str(misPAll(m)*10),'_',num2str(mu(2)),'_5_cons',num2str(extracons(i)),'accauto.lp.out'];
-            [~,solME_status,solME_full] = readSoplexResult(fileName_out,model);
-    
-    if strcmp(solME_status,'optimal') && ~isempty(solME_full)
-        flux_tmp = solME_full;
-        mu = mu(2);
-    else
-                    fileName_out = ['Simulation_dilutionYMR297W_',num2str(round(TPrate(j)*1E6,3)),'_mis',num2str(misPAll(m)*10),'_',num2str(mu(1)),'_5_cons',num2str(extracons(i)),'accauto.lp.out'];
-            [~,solME_status,solME_full] = readSoplexResult(fileName_out,model);
-                    flux_tmp = solME_full;
-                     mu = mu(1);
-    end
-fluxes_simulated = flux_tmp;
-res(1) = mu;
-res(2) = TPrate(j);
-res(3) = misPAll(m);
-res(4) = 5;
-res(5) = extracons(i);
-resid = {'mu','TPrate','misP','n','extraconstrait'};
-
-save(['resYMR297W_',num2str(TPrate(j)*1E6),'_mis',num2str(misPAll(m)*10),'_',num2str(5),'extracons',num2str(extracons(i)),'.mat'],'res','fluxes_simulated','resid')
-        end
-    end
-end
     
 for m = [0,4,5,7,8]
 file = dir(['*extracons',num2str(m),'.mat']);

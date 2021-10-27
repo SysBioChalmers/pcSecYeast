@@ -3,7 +3,7 @@
 
 % Before run this script, please 1) check the annotation file is correct
 % for all sce proteins
-addpath(genpath('../../SecYeast/'))
+addpath(genpath('../../pcSecYeast/'))
 
 % Matlab will coorupt if we put all information in one sheet
 % [~,~,proteins] = xlsread('TableS1.xlsx','Annotation');

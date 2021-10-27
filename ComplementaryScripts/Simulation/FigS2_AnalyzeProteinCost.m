@@ -1,4 +1,4 @@
-cd SimulateProteinCost/
+cd SimulateProteinCost_res/
 
 % analyze ProteinCost
 [~,~,protein_info] = xlsread('Protein_Information.xlsx');

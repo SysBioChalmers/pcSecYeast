@@ -1,7 +1,7 @@
 %% crabtree
 
 load('pcSecYeast.mat');
-cd crabtree/;
+cd crabtree_res/;
 file = dir('*.out');
 filename = {file.name};
 fluxes = zeros(length(model.rxns),0);
@@ -28,7 +28,7 @@ for i = 1:length(TP)
     load(['model',TP{i},'.mat']);
     
     fluxes = zeros(length(model.rxns),0);
-    allfile = filename(contains(filename,TP{i}));
+    allfile = filename(startsWith(filename,['Simulation_dilution',TP{i},'_']));
     for j = 1:length(allfile)
         [~,sol_status,sol_full] = readSoplexResult(allfile{j},model);
         if strcmp(sol_status,'optimal')

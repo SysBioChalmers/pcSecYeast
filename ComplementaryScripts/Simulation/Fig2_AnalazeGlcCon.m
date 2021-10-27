@@ -1,7 +1,7 @@
 %% plot figure 2A and Figure 2B
 
 %% result for GlcCon
-cd SimulateGlcCon
+cd SimulateGlcCon_res/
 res = dir('res*.mat');
 res = {res.name};
 
@@ -34,7 +34,6 @@ co2 = fluxes(strcmp(model.rxns,'r_1672'),:);
 %% Figure 2a 
 figure('Name','1');
 hold on;
-box on;
 hold on;
 yyaxis left;
 plot(log10(res),glc,'.-','LineWidth',0.75,'Color',[55,126,184]/255);
@@ -67,7 +66,6 @@ fluxes_exp_yeast = [0.1  0.15  0.2  0.25  0.28  0.3   0.32  0.35  0.36  0.38 ; %
 
 figure('Name','2');
 hold on;
-box on;
 
 plot(fluxes_exp_yeast(1,:),fluxes_exp_yeast(2,:),'o','LineWidth',0.75,'Color',[55,126,184]/255,'MarkerSize',5);
 plot(fluxes_exp_yeast(1,:),fluxes_exp_yeast(3,:),'o','LineWidth',0.75,'Color',[255,127,0]/255,'MarkerSize',5);
@@ -121,11 +119,11 @@ hxtrxnID = {'r_1166_10';'r_1166_17';'r_1166_5';'r_1166_9';'r_1166_3'}; % glucose
 Km_hxt = [110;1.5;34;9.3;2.5]; % bionumber 110954 110739 PMID 2482015 10336421 https://doi.org/10.1101/2020.06.22.165753 table
 hxt = {'YHR094C';'YMR011W';'YDR345C';'YHR092C';'YDR342C'};
 kcatmax = [1012 53 479 155 197];
-glccost = [3.12E+03
-2.94E+03
-3.35E+03
-3.12E+03
-3.19E+03];
+glccost = [3.12E+03 3261.607785
+2.94E+03 3073.581077
+3.35E+03 3349.614728
+3.12E+03 3265.470543
+3.19E+03 3347.589947];
 [~,idx] = ismember(hxtrxnID,model.rxns);
 hxt_flux = fluxes(idx,:);
 hxt = hxt(any(hxt_flux,2)); % remove hxt without flux
@@ -149,8 +147,5 @@ set(gca,'FontSize',6,'FontName','Helvetica');
 xlabel('Residue glucose concentration [mM] log10','FontSize',7,'FontName','Helvetica','Color','k');
 ylabel('Glucose cost for sustain certain uptake','FontSize',7,'FontName','Helvetica','Color','k');
 box on
-set(gcf,'position',[0 200 150 150]);
-set(gca,'position',[0.2 0.4 0.6 0.6]);
-
 set(gcf,'position',[0 200 150 150]);
 set(gca,'position',[0.2 0.4 0.6 0.6]);
