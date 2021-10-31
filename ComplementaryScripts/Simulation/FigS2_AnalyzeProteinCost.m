@@ -34,13 +34,13 @@ set(gcf,'position',[0 200 150 150]);
 ylim([0,120])
 
 
-% [num_abd,raw_abd,~] = xlsread('Proteome_collected.xlsx','mRNA_Qi2020');
-% group = [1,1,2,2,3,3,1,1,2,2,3,3];
-% %group = [2,2,2,2,2,2,3,3,3,3,3,3,1,1,1];
-[num_abd,raw_abd,~] = xlsread('amylase_fpkm_Huang_NC.xlsx');
-group = [1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8];
-[num_abd,raw_abd,~] = xlsread('Proteome_collected.xlsx','mRNA_Jianye2021');
-group = [1,1,1,2,2,2,3,3,3,4,4,4,5,5,5];
+[num_abd,raw_abd,~] = xlsread('Proteome_collected.xlsx','mRNA_Qi2020');
+group = [1,1,2,2,3,3,1,1,2,2,3,3];
+%group = [2,2,2,2,2,2,3,3,3,3,3,3,1,1,1];
+%[num_abd,raw_abd,~] = xlsread('amylase_fpkm_Huang_NC.xlsx');
+%group = [1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8];
+%[num_abd,raw_abd,~] = xlsread('Proteome_collected.xlsx','mRNA_Jianye2021');
+%group = [1,1,1,2,2,2,3,3,3,4,4,4,5,5,5];
 
 
 for i = 1:length(num_abd(1,:))
@@ -52,7 +52,7 @@ m(idx~=0,1) = pax_abundance(idx(idx~=0));
 idx = find(m ~= 0 & ~isnan(m)&res_glc_final(:,1,2) ~= 0);
 m = m(idx);
 n = res_glc_final(idx,1,2);
-[RHO4,PVAL4] = corr(log10(abs(n)),log10(m),'Type','Spearman');
+[RHO4,PVAL4] = corr(log10(abs(n)),log10(m),'Type','Pearson');
 % [~,idx] = ismember(strrep(ERprotein,'new',''),pax_protein_list);
 % m = [];
 % m(idx~=0,1) = pax_abundance(idx(idx~=0));
