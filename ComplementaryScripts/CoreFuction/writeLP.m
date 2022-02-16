@@ -268,10 +268,10 @@ fprintf(fptr,'CPD: %s - %.15f X%d = 0\n',eq,coef_syn,id_syn);
 rxnID=sprintf('Mach_Ribosome_complex_formation');
 id_syn=find(ismember(model.rxns,rxnID));
 %kcat_ribo = enzymedataMachine.kcat(ismember(enzymedataMachine.enzyme,'Ribosome'));
-kcat_ribo = 2.40E+01*mu/(0.443253968+mu)*3600;  %this one
-%kcat_ribo = 2.95E+01*mu/(0.618350415+mu)*3600; % this one is made up tp
-% kcat_ribo = 2.40E+01*0.35/(0.443253968+0.35)*3600
-%kcat_ribo = 3.09E+01*mu/(0.626149132+mu)*3600; 
+
+%kcat_ribo = 2.42E+01*mu/(0.447+mu)*3600; 
+
+kcat_ribo = 2.26E+01*mu/(0.443+mu)*3600; 
 
 
 %kcat_ribo = 4.200885742652671e+04;
@@ -401,7 +401,8 @@ end
 
 %% sec61 translocator constraint
 if ismember(6,extraconstraintnum)
-translocator = {'YLR378C','YBR283C','YIL030C','YOL013C'}; % SEC61 SSH1 DOA10 HRD1
+%translocator = {'YIL030C','YOL013C'}; % SEC61 SSH1 DOA10 HRD1
+translocator = {'YBR201W';'YDR057W';'YER100W';'YIL030C';'YLR207W';'YML029W';'YMR022W';'YMR264W';'YOL013C'};
 % 'YIL170W' is not in the model
 [~,idx1] = ismember(translocator,enzymedata.proteins);
 complexidx1 = enzymedata.enzyme(find(sum(enzymedata.enzymeSubunitMatrix(:,idx1),2))); % index the complex which contains those erm protein as subunits
@@ -427,7 +428,7 @@ for i = 1:length(complexidx1)
         end
 end
 
-fprintf(fptr,'CtotTransLoc: %s <= %.15f\n',eq,mu*5.08e-4); % from the proteome data
+fprintf(fptr,'CtotTransLoc: %s <= %.15f\n',eq,mu*8.08e-5); % from the proteome data 1.15e-4
 end
 
 %% ERAD constaint

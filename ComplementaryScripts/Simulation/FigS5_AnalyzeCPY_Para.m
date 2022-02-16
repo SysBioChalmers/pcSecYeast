@@ -43,7 +43,7 @@ for i = 1:length(data_abun)
 end
 
 % 3d plot
-TPrate = linspace(3.08E-7,3.85e-04,3);
+TPrate = linspace(3.875E-7,1.9375e-04,3);
 
 figure('Name','1');
 surf(data_misfold,data_abun,data_mu,'EdgeColor','none');
@@ -53,6 +53,7 @@ az = -145;
 el = 25;
 view(az, el);
 xticks([0:0.2:1]);
+yticks(TPrate)
 set(gca,'FontSize',6,'FontName','Helvetica');
 xlabel('Misfold/total CPY ratio','FontSize',7,'FontName','Helvetica');
 ylabel(['CPY expression rate',char(13,10)','[mmol/gDW/h]'],'FontSize',7,'FontName','Helvetica');
@@ -69,7 +70,6 @@ az = -145;
 el = 25;
 view(az, el);
 xticks([0:0.2:1]);
-ylim([3.08E-7,3.85e-04])
 yticks(TPrate)
 
 set(gca,'FontSize',6,'FontName','Helvetica');

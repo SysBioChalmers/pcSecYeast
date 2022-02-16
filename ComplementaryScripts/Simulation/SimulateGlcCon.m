@@ -4,13 +4,13 @@ function SimulateGlcCon(i)
 initcluster
 % mkdir('SimulateGlcCon')
 % cd('SimulateGlcCon')
-%197/s HXT7 KM 2.5mM pubmed: 11561293 15345416
-% 53/s HXT2  pubmed:10191260
+%197/s HXT7 KM 2.5mM bionumber 101737 pubmed: 11561293 15345416 
+% 53/s HXT2  bionumber 101739 pubmed:10191260
 % https://www.jbc.org/action/showPdf?pii=S0021-9258%2819%2973030-0
 mkdir('SimulateGlcCon')
 cd SimulateGlcCon
 res_glc = [1E-3 5E-3 1E-2 5E-2 0.1 0.15 0.2 0.25 0.3 0.35 0.4 0.45 0.5 1 10 20 30 40 50 100];
-Km_hxt = [110;1.5;34;9.3;2.5]; % bionumber 110954 110739 PMID 2482015 10336421 https://doi.org/10.1101/2020.06.22.165753 table
+Km_hxt = [110;1.5;34;9.3;2.5]; % bionumber 110954  PMID 10336421 https://doi.org/10.1101/2020.06.22.165753 table
 hxt = {'YHR094C';'YMR011W';'YDR345C';'YHR092C';'YDR342C'}; % HXT1,HXT2,HXT3,HXT4,HXT7
 kcatmax = [1012 53 479 155 197]*3600; % calculated from Vmax based on the assumption that the kcat for the hxt2 is 53/s and hxt7 is 200/s
 hxtrxnID = {'r_1166_10_complex';'r_1166_17_complex';'r_1166_5_complex';'r_1166_9_complex';'r_1166_3_complex'}; % glucose transporter rxn
@@ -33,6 +33,7 @@ model = changeRxnBounds(model,'r_1992',-1000,'l');
 model = blockRxns(model);
 model = changeRxnBounds(model,'r_1634',0,'b');% acetate production
 model = changeRxnBounds(model,'r_1631',0,'b');% acetaldehyde production
+model = changeRxnBounds(model,'r_2033',0,'b');% pyruvate production
 
 rxnID = 'dilute_dummy'; %minimize glucose uptake rate
 osenseStr = 'Maximize';
@@ -68,9 +69,9 @@ while factor_mu_high-factor_mu_low > 0.001
     
     model_tmp = changeRxnBounds(model,'r_2111',mu,'b');
     name = ['GlcCon_',num2str(res_glc(i)),'_',num2str(mu*100)];
-    fileName = writeLP(model_tmp,mu,f,f_unmodelER,osenseStr,rxnID,enzymedata_all,factor_k,name,[4,5]);
-    %command = sprintf('/home/f/feiranl/tools/soplex-4.0.0/build/bin/soplex -s0 -g5 -t3000 -f1e-17 -o1e-17 -x -q -c --int:readmode=1 --int:solvemode=2 --int:checkmode=2 --real:fpfeastol=1e-3 --real:fpopttol=1e-3 %s > %s.out %s',fileName,fileName);
-    command = sprintf('/cephyr/users/feiranl/Hebbe/tools/build/bin/soplex -s0 -g5 -t3000 -f1e-17 -o1e-17 -x -q -c --int:readmode=1 --int:solvemode=2 --int:checkmode=2 --real:fpfeastol=1e-3 --real:fpopttol=1e-3 %s > %s.out %s',fileName,fileName);
+    fileName = writeLP(model_tmp,mu,f,f_unmodelER,osenseStr,rxnID,enzymedata_all,factor_k,name);
+    command = sprintf('/home/f/feiranl/tools/soplex-4.0.0/build/bin/soplex -s0 -g5 -t3000 -f1e-17 -o1e-17 -x -q -c --int:readmode=1 --int:solvemode=2 --int:checkmode=2 --real:fpfeastol=1e-3 --real:fpopttol=1e-3 %s > %s.out %s',fileName,fileName);
+    %command = sprintf('/cephyr/users/feiranl/Hebbe/tools/build/bin/soplex -s0 -g5 -t3000 -f1e-17 -o1e-17 -x -q -c --int:readmode=1 --int:solvemode=2 --int:checkmode=2 --real:fpfeastol=1e-3 --real:fpopttol=1e-3 %s > %s.out %s',fileName,fileName);
     system(command,'-echo');
     fileName_out = [fileName,'.out'];
     [~,solME_status,solME_full] = readSoplexResult(fileName_out,model_tmp);

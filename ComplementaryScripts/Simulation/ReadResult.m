@@ -20,7 +20,7 @@ cd ../
 %% TP1
 TP = {'Amylase';'Insulin';'HSA';'Hemoglobincomplex';'Humantransferin';'BGL';'PHO';'HGCSF'};
 load('pcSecYeast.mat');
-cd SimulateTP1res/;
+cd SimulateTP_SDAA_res/;
 file = dir('*.out');
 filename = {file.name};
 for i = 1:length(TP)
@@ -39,6 +39,22 @@ for i = 1:length(TP)
     end
     save(['fluxes_',TP{i},'.mat'],'fluxes');
 end
+% ref result
+file = dir('*.out');
+filename = {file.name};
+load('pcSecYeast.mat');
+fluxes = zeros(length(model.rxns),0);
+allfile = filename(startsWith(filename,'Simulation_dilutionref_'));
+for j = 1:length(allfile)
+    [~,sol_status,sol_full] = readSoplexResult(allfile{j},model);
+    if strcmp(sol_status,'optimal')
+        fluxes = [fluxes sol_full];
+    else
+        fluxes = [fluxes zeros(length(model.rxns),1)];
+    end
+end
+save('fluxes_ref.mat','fluxes');
+
 cd ../
 
 
@@ -104,22 +120,17 @@ filename = {file.name};
 cd ../
 
 %% FakeTP
-
-load('pcSecYeast.mat');
-cd SimulateFakeTPres/;
-file = dir('*.out');
-filename = {file.name};
-maxTP = [];
-for j = 1:length(filename)
-    [sol_obj,sol_status,~] = readSoplexResult(filename{j},model);
-    if strcmp(sol_status,'optimal')
-        maxTP = [maxTP sol_obj];
-    else
-        maxTP = [maxTP 0];
-    end
+k = 1:50:1112;
+for i = 1:length(k)-1
+    load(['res_maxTP',num2str(k(i)),'.mat'])
+    res(k(i):k(i)+49,1) = maxTP(k(i):k(i)+49);
 end
-idx = find(maxTP~=0);
-filename = filename(idx);
-maxTP = maxTP(idx);
-save('res_maxTP.mat','maxTP');
 
+load(['res_maxTP1051.mat'])
+res(k(i):1112,1) = maxTP(k(i):1112);
+load('fakeProteinInfo.mat')
+fakeProteinInfo(:,15) = num2cell(res);
+fakeProteinInfo(find(res == 0),:) = [];
+t = cell2table(fakeProteinInfo);
+writetable(t,'res_FakeProtein.txt','Delimiter','\t','QuoteStrings',false,'WriteRowNames',true)
+    

@@ -61,4 +61,5 @@ model = changeRxnBounds(model,plpbwrxns,zeros(1,length(plpbwrxns)),'b');
 gshrxns = {'r_0483_1_rvs' 'r_0483_2_rvs' 'r_0483_3_rvs' 'r_0483_4_rvs' 'r_0483_5_rvs' 'r_0483_6_rvs'};
 model = changeRxnBounds(model,gshrxns,zeros(1,length(gshrxns)),'b');
 
+model = changeRxnBounds(model,'r_0446_rvs',0,'b');% blocked in the recent version yeast8
 

@@ -46,7 +46,7 @@ ylim([0 40]);
 yyaxis right;
 plot(log10(res),mu,'.-','LineWidth',0.75,'Color',[186,186,186]/255);
 set(gca,'ycolor','k');
-ylim([0 0.4]);
+ylim([0 0.45]);
 ylabel('growth rate [1/h]','FontSize',7,'FontName','Helvetica');
 
 legend({'qglucose',...
@@ -70,9 +70,9 @@ hold on;
 plot(fluxes_exp_yeast(1,:),fluxes_exp_yeast(2,:),'o','LineWidth',0.75,'Color',[55,126,184]/255,'MarkerSize',5);
 plot(fluxes_exp_yeast(1,:),fluxes_exp_yeast(3,:),'o','LineWidth',0.75,'Color',[255,127,0]/255,'MarkerSize',5);
 plot(fluxes_exp_yeast(1,:),fluxes_exp_yeast(4,:),'o','LineWidth',0.75,'Color',[77,175,74]/255,'MarkerSize',5);
-plot(res,glc,'-','LineWidth',0.75,'Color',[55,126,184]/255);
-plot(res,etoh,'-','LineWidth',0.75,'Color',[255,127,0]/255);
-plot(res,o2,'-','LineWidth',0.75,'Color',[77,175,74]/255);
+plot(mu,glc,'-','LineWidth',0.75,'Color',[55,126,184]/255);
+plot(mu,etoh,'-','LineWidth',0.75,'Color',[255,127,0]/255);
+plot(mu,o2,'-','LineWidth',0.75,'Color',[77,175,74]/255);
 
 xlim([0 0.4]);
 
@@ -98,7 +98,6 @@ figure
 
 figure
 hold on
-box on
 color = [202,0,32
 244,165,130
 146,197,222
@@ -106,6 +105,7 @@ color = [202,0,32
 for i = 1:length(hxt)
 plot(log10(res),hxt_flux(i,:),'.-','LineWidth',0.75,'Color',color(i,:));
 end
+box on
 
 set(gca,'FontSize',6,'FontName','Helvetica');
 xlabel('Extracelluar glucose in log10 scale [mM]','FontSize',7,'FontName','Helvetica','Color','k');
@@ -119,11 +119,11 @@ hxtrxnID = {'r_1166_10';'r_1166_17';'r_1166_5';'r_1166_9';'r_1166_3'}; % glucose
 Km_hxt = [110;1.5;34;9.3;2.5]; % bionumber 110954 110739 PMID 2482015 10336421 https://doi.org/10.1101/2020.06.22.165753 table
 hxt = {'YHR094C';'YMR011W';'YDR345C';'YHR092C';'YDR342C'};
 kcatmax = [1012 53 479 155 197];
-glccost = [3.12E+03 3261.607785
-2.94E+03 3073.581077
-3.35E+03 3349.614728
-3.12E+03 3265.470543
-3.19E+03 3347.589947];
+glccost = [3002.6 3145.6
+2829.9 2963.2
+3082.7 3232.0
+3007.0 3149.1
+3072.0 3220.5];
 [~,idx] = ismember(hxtrxnID,model.rxns);
 hxt_flux = fluxes(idx,:);
 hxt = hxt(any(hxt_flux,2)); % remove hxt without flux

@@ -25,7 +25,7 @@ model = changeRxnBounds(model,'r_1992',-1000,'l');
 model = blockRxns(model);
 model = changeRxnBounds(model,'r_1634',0,'b');% acetate production
 model = changeRxnBounds(model,'r_1631',0,'b');% acetaldehyde production
-
+model = changeRxnBounds(model,'r_2033',0,'b');% pyruvate production
 % close other protein dilution misfolding 
  rxn = contains(model.rxns,'_dilution_misfolding_m')|contains(model.rxns,'_dilution_misfolding_c')|contains(model.rxns,'_dilution_misfolding_er');
  model.ub(rxn) = 0;
@@ -125,8 +125,8 @@ while factor_mu_high-factor_mu_low > 0.001
     name = [TP,'_',num2str(TPrate*1E6),'_mis',num2str(misP*10),'_',num2str(mu*100),'_',num2str(n),'_cons',num2str(extraconstrait),state];
 
     fileName = writeLP(model_tmp,mu,f,f_unmodelER,osenseStr,rxnID,enzymedata_new,factor_k,name,[extraconstrait]);
-    %command = sprintf('/home/f/feiranl/tools/soplex-4.0.0/build/bin/soplex -s0 -g5 -t3000 -f1e-17 -o1e-17 -x -q -c --int:readmode=1 --int:solvemode=2 --int:checkmode=2 --real:fpfeastol=1e-3 --real:fpopttol=1e-3 %s > %s.out %s',fileName,fileName);
-    command = sprintf('/cephyr/users/feiranl/Hebbe/tools/build/bin/soplex -s0 -g5 -t3000 -f1e-20 -o1e-20 -x -q -c --int:readmode=1 --int:solvemode=2 --int:checkmode=2 --real:fpfeastol=1e-9 --real:fpopttol=1e-9 %s > %s.out %s',fileName,fileName);
+    command = sprintf('/home/f/feiranl/tools/soplex-4.0.0/build/bin/soplex -s0 -g5 -t3000 -f1e-17 -o1e-17 -x -q -c --int:readmode=1 --int:solvemode=2 --int:checkmode=2 --real:fpfeastol=1e-3 --real:fpopttol=1e-3 %s > %s.out %s',fileName,fileName);
+    %command = sprintf('/cephyr/users/feiranl/Hebbe/tools/build/bin/soplex -s0 -g5 -t3000 -f1e-20 -o1e-20 -x -q -c --int:readmode=1 --int:solvemode=2 --int:checkmode=2 --real:fpfeastol=1e-9 --real:fpopttol=1e-9 %s > %s.out %s',fileName,fileName);
     system(command,'-echo');
     fileName_out = [fileName,'.out'];
     [~,solME_status,solME_full] = readSoplexResult(fileName_out,model_tmp);

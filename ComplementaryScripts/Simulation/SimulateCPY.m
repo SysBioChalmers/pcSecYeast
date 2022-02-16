@@ -32,7 +32,7 @@ model = changeRxnBounds(model,'r_1992',-1000,'l');
 model = blockRxns(model);
 model = changeRxnBounds(model,'r_1634',0,'b');% acetate production
 model = changeRxnBounds(model,'r_1631',0,'b');% acetaldehyde production
-
+model = changeRxnBounds(model,'r_2033',0,'b');% pyruvate production
 % close other protein dilution misfolding 
  rxn = contains(model.rxns,'_dilution_misfolding_m')|contains(model.rxns,'_dilution_misfolding_c')|contains(model.rxns,'_dilution_misfolding_er');
  model.ub(rxn) = 0;

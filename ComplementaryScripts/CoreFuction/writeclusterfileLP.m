@@ -1,11 +1,10 @@
 function writeclusterfileLP(allname,subname)
 
-
 subfileName = [subname,'.sh'];
 fptr = fopen(subfileName,'w');
 fprintf(fptr,'#!/bin/bash\n');
-%fprintf(fptr,'#SBATCH -A C3SE2021-1-16\n');
-fprintf(fptr,'#SBATCH -A snic2021-22-16\n');
+%fprintf(fptr,'#SBATCH -A C3SE2022-1-16\n');
+fprintf(fptr,'#SBATCH -A snic2021-22-1004\n');
 fprintf(fptr,'#SBATCH -n 20\n');
 fprintf(fptr,'#SBATCH -o out.txt\n');
 fprintf(fptr,'#SBATCH --time 0-3:00:00\n');

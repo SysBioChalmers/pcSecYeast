@@ -9,6 +9,8 @@ compartment = proteins(idx,24);
 
 for i = 2:numel(complex_list)%1 is the title line
     disp(['Adding complex:' num2str(i) '/' num2str(length(complex_list))]);
+    
+    % add complex formation
     metrxnname = complex_list(i);
     cmplxid = strcat(cell2mat(metrxnname),'[',compartment{i},']');
     rxnid = strcat(cell2mat(metrxnname),'_formation');
@@ -34,7 +36,8 @@ for i = 2:numel(complex_list)%1 is the title line
     coeflist = [-1*determined_stoich' -1*undetermined_stoich' 1];
     model = addReaction(model,rxnid,'metaboliteList',metlist,'stoichCoeffList',coeflist,'reversible',false);
     
-%     % degradation
+%   % complex degradation complex is not degraded for now in the model (only protein subunit is degraded), but which
+%     can be added back in the model later if needed
 %     metlist_deg = strrep(metlist,'folding','subunit');
 %     coeflist_deg = [1*determined_stoich' 1*undetermined_stoich' -1];
 %     rxnid_deg = strcat(cell2mat(metrxnname),'_complex_degradation');

@@ -17,6 +17,7 @@ for i = 1:length(rxnList_kapp4)
     end
     stoi = enzymedata.subunit_stoichiometry(rxnTmp,1);
     enzymedata.kcat(rxnTmp) = stoi*kapp4.max(i)*3600;
+    enzymedata.kcat_conf(rxnTmp) = 6;
 end
 
 end

@@ -123,8 +123,8 @@ for i = 1:length(enzyme_list)
     enzymedata.kcat_conf(i,1) = conf_tmp;
     finalkcat_list = enzymedata.subunit_kcat(i,:).*enzymedata.subunit_stoichiometry(i,:); %consider protein stoichiometry
     kcat_tmp = finalkcat_list(enzymedata.subunit_kcat_conf(i,:) == conf_tmp);
-%     enzymedata.kcat(i,1) = median(kcat_tmp); %choose median among subunits
-    enzymedata.kcat(i,1) = min(kcat_tmp); %choose minimum among subunits
+    enzymedata.kcat(i,1) = median(kcat_tmp); %choose median among subunits
+    %enzymedata.kcat(i,1) = min(kcat_tmp); %choose minimum among subunits
 end
 
 % no kcat assigned enzyme assumed to be the median of the collected dataset

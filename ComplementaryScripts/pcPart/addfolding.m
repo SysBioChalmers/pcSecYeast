@@ -7,9 +7,10 @@ for k = 1:numel(peptide)
         error([peptide{k},':cannot find gene PTM information'])
     end
     peptide_comp = protein_info(geneidx,10); %peptide compartment
-    if geneidx ~= 0 && cell2mat(protein_info(geneidx,3)) == 1
+    % proteins processed in the secretory pathway
+    if geneidx ~= 0 && cell2mat(protein_info(geneidx,3)) == 1 
         model = addModificationforSec(model,peptide(k),protein_info);
-    else
+    else % NOT processed in the secretory pathway
         peptide(k) = strrep(peptide(k),'-','_');
         % start to adding reactions
         if strcmp(peptide_comp,'c')==0
@@ -40,7 +41,8 @@ for k = 1:numel(peptide)
         rxnName=sprintf('%s Misfolding',cell2mat(peptide(k)));
         model=addYeastReaction(model,r,rxnID,{rxnName});
         
-        %refolding
+        %refolding is not considered for now but can be added if needed in
+        % the future
 %         r=sprintf('%s_misfolding[%s] => %s_folding[%s]',cell2mat(peptide(k)),cell2mat(peptide_comp),cell2mat(peptide(k)),cell2mat(peptide_comp));
 %         rxnID=sprintf('%s_refolding_%s',cell2mat(peptide(k)),cell2mat(peptide_comp));
 %         rxnID=strrep(rxnID,'-','');

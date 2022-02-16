@@ -20,7 +20,6 @@ tic;
 % cd ../../;
 % save('Yeast8.mat','org_model');
 load('Yeast8.mat');
-
 %% Modify the original model
 [model_updated,energyResults,redoxResults] = modifyYeast8(org_model);
 clear org_model;
@@ -62,7 +61,7 @@ enzymedata = updatekcats(enzymedata);
 
 % get kdeg info from petri's proteome data
 enzymedata = getkdeg(enzymedata);
-enzymedata.kdeg(1:end) = 0.1;% using 0.1 for now
+%enzymedata.kdeg(1:end) = 0.1;% using 0.1 for now
 
 % Calculate molecular weight for each enzyme
 enzymedata = calculateMW(enzymedata,ProteinSequence,protein_info);
@@ -106,8 +105,8 @@ model = changeRxnBounds(model,refold_list,0,'b');
 f_modeled_protein = estimateModeledprotein(model);
 
 f_modeled_protein = f_modeled_protein + missingsecP_ratio; % small amount of protein has been added into ER
-f_modeled_protein = 0.7;
-f_modeled_protein = round(f_modeled_protein,2); %g/gProtein
+f_modeled_protein = 0.70;
+f_modeled_protein = floor(f_modeled_protein,2); %g/gProtein
 % Change the biomass equation
 model = changeBiomass(model,f_modeled_protein,'r_4041','s_3717[c]');
 % r_4041 is pseudo_biomass_rxn_id in the original GEM
@@ -117,7 +116,7 @@ model = changeBiomass(model,f_modeled_protein,'r_4041','s_3717[c]');
 % s_4205[c] is cofactor id in the original GEM
 
 % change GAM and NGAM
-GAM= 35;
+GAM= 30;
 NGAM = 0.5;
 model = changeGAM(model,GAM,NGAM);
 

@@ -132,6 +132,7 @@ model = changeRxnBounds(model,'r_1992',-1000,'l');
 model = blockRxns(model);
 model = changeRxnBounds(model,'r_1634',0,'b');% acetate production
 model = changeRxnBounds(model,'r_1631',0,'b');% acetaldehyde production
+model = changeRxnBounds(model,'r_2033',0,'b');% pyruvate production
 
 tot_protein = 0.46; %g/gCDW, estimated from the original GEM.
 f_modeled_protein = extractModeledprotein(model,'r_4041','s_3717[c]'); %g/gProtein

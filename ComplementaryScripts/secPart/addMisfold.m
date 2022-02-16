@@ -72,6 +72,11 @@ end
         reaction{7}.rxns = sprintf('%s_ERADM_sec_Sbh1p_Sss1p_Ssh1p_Cdc48p_Ubx2p_Ufd1p_Npl4p_complex',peptide_org);
         reaction{7}.rxnNames = sprintf('%s_ERADM_sec_Sbh1p_Sss1p_Ssh1p_Cdc48p_Ubx2p_Ufd1p_Npl4p_complex',peptide);
         reaction{7}.eq = sprintf('%s_misf_G5[er] + 8 Ubiquitin_for_Transfer[c] => %s_misf_G6[c] + 8 Ubiquitin[c]',peptide,peptide);
+   
+        reaction{8}.rxns = sprintf('%s_ERADM2_sec_Cue1p_Ubc6p_Ubc7p_Doa10p_complex',peptide_org); % paper report that Doa10 can also retro-translocate membrane proteins
+        reaction{8}.rxnNames = sprintf('%s_ERADM2_sec_Cue1p_Ubc6p_Ubc7p_Doa10p_complex',peptide);
+        reaction{8}.eq = sprintf('%s_misf_G4[er] => %s_misf_G5[er]',peptide,peptide);          
+       
    else % ERADL
              
         reaction{6}.rxns = sprintf('%s_ERADL_sec_Cue1p_Ubc6p_Ubc7p_Yos9p_Hrd1p_Hrd3p_Der1p_Usa1p_complex',peptide_org);
@@ -81,54 +86,52 @@ end
         reaction{7}.rxnNames = sprintf('%s_Survaliancecplx formation of misfoled protein_Yos9p_Hrd1p_Hrd3p',peptide);
         reaction{7}.eq = sprintf('%s_misf_G5[er] + 8 Ubiquitin_for_Transfer[c] => %s_misf_G6[c] + 8 Ubiquitin[c]',peptide,peptide);
    end
+   n = length(reaction);
    if NG > 0
-        reaction{8}.rxns = sprintf('%s_ERAD7A_sec_Dsk2p_Rad23p_Png1p_Uba1p_complex',peptide_org);
-        reaction{8}.rxnNames = sprintf('%s_ERAD_sec_Dsk2p_Rad23p_Png1p_Uba1p_complex',peptide);
-    
-        reaction{8}.eq = sprintf('%s_misf_G6[c] => %s_misfolding[c] + %d D-mannose[er] + %d N-acetyl-alpha-D-glucosamine 1-phosphate[c]',peptide,peptide_org,man,nac);
+        reaction{n+1}.rxns = sprintf('%s_ERAD7A_sec_Dsk2p_Rad23p_Png1p_Uba1p_complex',peptide_org);
+        reaction{n+1}.rxnNames = sprintf('%s_ERAD_sec_Dsk2p_Rad23p_Png1p_Uba1p_complex',peptide);
+        reaction{n+1}.eq = sprintf('%s_misf_G6[c] => %s_misfolding[c] + %d D-mannose[er] + %d N-acetyl-alpha-D-glucosamine 1-phosphate[c]',peptide,peptide_org,man,nac);
     elseif NG == 0
         if OG > 0
-            reaction{8}.rxns = sprintf('%s_ERAD7B_sec_Dsk2p_Rad23p_Png1p_Uba1p_complex',peptide_org);
-            reaction{8}.rxnNames = sprintf('%s_ERAD_sec_Dsk2p_Rad23p_Png1p_Uba1p_complex',peptide);
-            reaction{8}.eq = sprintf('%s_misf_G6[c] => %s_misfolding[c] + %d D-mannose[er]',peptide,peptide_org,man);
+            reaction{n+1}.rxns = sprintf('%s_ERAD7B_sec_Dsk2p_Rad23p_Png1p_Uba1p_complex',peptide_org);
+            reaction{n+1}.rxnNames = sprintf('%s_ERAD_sec_Dsk2p_Rad23p_Png1p_Uba1p_complex',peptide);
+            reaction{n+1}.eq = sprintf('%s_misf_G6[c] => %s_misfolding[c] + %d D-mannose[er]',peptide,peptide_org,man);
 
         else
-            reaction{8}.rxns = sprintf('%s_ERAD7C_sec_Dsk2p_Rad23p_Uba1p_complex',peptide_org);
-            reaction{8}.rxnNames = sprintf('%s_ERAD_sec_Dsk2p_Rad23p_Uba1p_complex',peptide);
-            reaction{8}.eq = sprintf('%s_misf_G6[c] => %s_misfolding[c]',peptide,peptide_org);
+            reaction{n+1}.rxns = sprintf('%s_ERAD7C_sec_Dsk2p_Rad23p_Uba1p_complex',peptide_org);
+            reaction{n+1}.rxnNames = sprintf('%s_ERAD_sec_Dsk2p_Rad23p_Uba1p_complex',peptide);
+            reaction{n+1}.eq = sprintf('%s_misf_G6[c] => %s_misfolding[c]',peptide,peptide_org);
         end
    end
-    reaction{9}.rxns = sprintf('%s_degradation_misfolding_c',peptide_org);
-    reaction{9}.rxnNames = sprintf('%s_degradation_misfolding_c',peptide_org);
-    reaction{9}.eq = sprintf('%s_misfolding[c] => %s_subunit[c]',peptide_org,peptide_org);
-%     %misfolding dilution
-%     reaction{n+1}.rxns = sprintf('%s_dilution_misfolding_c',peptide_org);
-%     reaction{n+1}.rxnNames = sprintf('%s_dilution_misfolding_c',peptide_org);
-%     reaction{n+1}.eq = sprintf('%s_misfolding[c] => ',peptide_org);
+    reaction{n+2}.rxns = sprintf('%s_degradation_misfolding_c',peptide_org);
+    reaction{n+2}.rxnNames = sprintf('%s_degradation_misfolding_c',peptide_org);
+    reaction{n+2}.eq = sprintf('%s_misfolding[c] => %s_subunit[c]',peptide_org,peptide_org);
 
-     %refolding
-    reaction{10}.rxns = sprintf('%s_refolding_er',peptide_org);
-    reaction{10}.rxnNames = sprintf('%s_refolding_er',peptide);
-    reaction{10}.eq = sprintf('%s_misf[er] => %s[er]',peptide,peptide);
-        n = length(reaction);
 
-    if DSB > 0
-        reaction{n+1}.rxns = sprintf('%s_cycle_accumulation_sec_pdi1p_ero1p_complex',peptide_org);
-        reaction{n+1}.rxnNames = sprintf('%s_cycle_accumulation_sec_pdi1p_ero1p_complex',peptide);
-        reaction{n+1}.eq = sprintf('%s_misf[er] + %d glutathione[er] + %d oxygen[er] => %d hydrogen peroxide[er] + %d glutathione disulfide[er] + %s_misf2[er]',peptide,20*DSB,10*DSB,10*DSB,10*DSB,peptide);
+
+    if DSB > 0 % retention
+        reaction{n+3}.rxns = sprintf('%s_cycle_accumulation_sec_pdi1p_ero1p_complex',peptide_org);
+        reaction{n+3}.rxnNames = sprintf('%s_cycle_accumulation_sec_pdi1p_ero1p_complex',peptide);
+        reaction{n+3}.eq = sprintf('%s_misf[er] + %d glutathione[er] + %d oxygen[er] => %d hydrogen peroxide[er] + %d glutathione disulfide[er] + %s_misf2[er]',peptide,20*DSB,10*DSB,10*DSB,10*DSB,peptide);
     else
-        reaction{n+1}.rxns = sprintf('%s_cycle_accumulation',peptide_org);
-        reaction{n+1}.rxnNames = sprintf('%s_cycle_accumulation',peptide);
-        reaction{n+1}.eq = sprintf('%s_misf[er] => %s_misf2[er]',peptide,peptide);
+        reaction{n+3}.rxns = sprintf('%s_cycle_accumulation',peptide_org);
+        reaction{n+3}.rxnNames = sprintf('%s_cycle_accumulation',peptide);
+        reaction{n+3}.eq = sprintf('%s_misf[er] => %s_misf2[er]',peptide,peptide);
     end
-    reaction{n+2}.rxns = sprintf('%s_cycle_accumulation_sec_acc_Kar2p_complex',peptide_org);
-    reaction{n+2}.rxnNames = sprintf('%s_cycle_accumulation_sec_acc_kar2p_complex',peptide);
-    reaction{n+2}.eq = sprintf('%s_misf2[er] + %d ATP[er] + %d H2O[er] => %s_misfolding_acc[er] + %d ADP[er] + %d H+[er] + %d phosphate[er]',peptide,10*Length,10*Length,peptide,10*Length,10*Length,10*Length);
+    reaction{n+4}.rxns = sprintf('%s_cycle_accumulation_sec_acc_Kar2p_complex',peptide_org);
+    reaction{n+4}.rxnNames = sprintf('%s_cycle_accumulation_sec_acc_kar2p_complex',peptide);
+    reaction{n+4}.eq = sprintf('%s_misf2[er] + %d ATP[er] + %d H2O[er] => %s_misfolding_acc[er] + %d ADP[er] + %d H+[er] + %d phosphate[er]',peptide,10*Length,10*Length,peptide,10*Length,10*Length,10*Length);
 
     %misfolding dilution
-    reaction{n+3}.rxns = sprintf('%s_dilution_misfolding_er',peptide_org);
-    reaction{n+3}.rxnNames = sprintf('%s_dilution_misfolding_c',peptide);
-    reaction{n+3}.eq = sprintf('%s_misfolding_acc[er] => ',peptide);
+    reaction{n+5}.rxns = sprintf('%s_dilution_misfolding_er',peptide_org);
+    reaction{n+5}.rxnNames = sprintf('%s_dilution_misfolding_c',peptide);
+    reaction{n+5}.eq = sprintf('%s_misfolding_acc[er] => ',peptide);
+    
+%   %refolding not considered for now, but can be added if needed in the
+%   future
+%     reaction{n+6}.rxns = sprintf('%s_refolding_er',peptide_org);
+%     reaction{n+6}.rxnNames = sprintf('%s_refolding_er',peptide);
+%     reaction{n+6}.eq = sprintf('%s_misf[er] => %s[er]',peptide,peptide);
     for i=1:length(reaction)
         if onlyrxns == 1
             rxns = [rxns;{reaction{i}.rxns}];

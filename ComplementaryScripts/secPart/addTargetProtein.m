@@ -80,16 +80,16 @@ for i = 1:length(TP)
         [~,geneidx] =ismember(TP(i),protein_info(:,2));
         peptide_comp = protein_info(geneidx,10); %peptide compartment
         cmplxid = strcat(cell2mat(TP(i)),'_folding[',peptide_comp,']');
-%         if ~strcmp(peptide_comp,'e')
-%             metlist_dil = cmplxid;
-%             coeflist_dil = -1;
-%             rxnid_dil = strcat(cell2mat(TP(i)),'_complex_dilution');
-%             model = addReaction(model,rxnid_dil,'metaboliteList',metlist_dil,'stoichCoeffList',coeflist_dil,'reversible',false);
-%         else
-            disp(['adding exchange rxn for the protein:',num2str(i)])
+        disp(['adding exchange rxn for the protein:',num2str(i)])
+%          if ~strcmp(peptide_comp,'e')
+%              metlist_dil = cmplxid;
+%              coeflist_dil = -1;
+%              rxnid_dil = strcat(cell2mat(TP(i)),'_complex_dilution');
+%              model = addReaction(model,rxnid_dil,'metaboliteList',metlist_dil,'stoichCoeffList',coeflist_dil,'reversible',false);
+%          else
             rxnid = strcat(cell2mat(TP(i)),' exchange');
             model = addReaction(model,rxnid,'metaboliteList',cmplxid,'stoichCoeffList',-1,'reversible',false);
-%        end
+%         end
     end
     
     

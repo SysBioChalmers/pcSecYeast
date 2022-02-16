@@ -51,20 +51,36 @@ for i = 1:length(rxnList)
     end
 end
 
+
 % match the coef for the rxnList
 enzymedata.proteins = setdiff(pax_protein_list,geneError);
 enzymedata = calculateMW(enzymedata,ProteinSequence,protein_info);
+enzymedata = getkdeg(enzymedata);
 enzymedataSEC.enzyme = SecComplex;
 enzymedataSEC.comp = SecComplex_comp;
 enzymedataSEC.coefref = SecComplex_coef;
-tmp = enzymedataSEC.coefref(strcmp(enzymedataSEC.enzyme,'sec_pdi1p_ero1p_complex')|strcmp(enzymedataSEC.enzyme,'sec_acc_Kar2p_complex')) % keep out accumulation rxn since it is not normal in cell
+tmp = enzymedataSEC.coefref(strcmp(enzymedataSEC.enzyme,'sec_pdi1p_ero1p_complex')|strcmp(enzymedataSEC.enzyme,'sec_acc_Kar2p_complex')); % keep out accumulation rxn since it is not normal in cell
 enzymedataSEC.coefref(strcmp(enzymedataSEC.enzyme,'sec_pdi1p_ero1p_complex')|strcmp(enzymedataSEC.enzyme,'sec_acc_Kar2p_complex')) = {'0*proteinLength'}; % keep out accumulation rxn since it is not normal in cell
 a.rxns = rxnList; %  rxnlist for all proteins
 enzymedata = SimulateRxnKcatCoef(a,enzymedataSEC,enzymedata);
 [~,idx] = ismember(enzymedata.rxns,rxnList); % index the rxns with the sec complex
 matchingList(idx(idx~=0),4) = num2cell(enzymedata.rxnscoef(idx~=0)); % coef
+[~,idx] = ismember(enzymedata.rxns,rxnList); % index the rxns with the sec complex
+matchingList(idx(idx~=0),4) = num2cell(enzymedata.rxnscoef(idx~=0)); % coef
 clear enzymedata
 enzymedataSEC.coefref(strcmp(enzymedataSEC.enzyme,'sec_pdi1p_ero1p_complex')|strcmp(enzymedataSEC.enzyme,'sec_acc_Kar2p_complex')) = tmp;
+
+
+% taking care of the alternative pathway ERADM by HRD1 and DOA10, transloc
+% by SEC61 or SSH1
+idx = find(contains(matchingList(:,2),'ERADM2'));
+idx2 = find(contains(matchingList(:,2),'ERADM_sec_Cue1p_Ubc6p_Ubc7p_Hrd1p_Hrd3p_Der1p_complex'));
+matchingList(idx,3) = num2cell(cellfun(@(x) x/2,matchingList(idx,3)));
+matchingList(idx2,3) = num2cell(cellfun(@(x) x/2,matchingList(idx,3)));
+% idx = find(contains(matchingList(:,2),'_co_translation_TC_sec_SEC61C_complex'));
+% idx2 = find(contains(matchingList(:,2),'_co_translation_TC_sec_SSH1C_complex'));
+% matchingList(idx,3) = num2cell(cellfun(@(x) x/2,matchingList(idx,3)));
+% matchingList(idx2,3) = num2cell(cellfun(@(x) x/2,matchingList(idx,3)));
 
 idx_tmp = contains(model.rxns,'_complex_formation');
 s_tmp = model.S(:,idx_tmp);
@@ -104,9 +120,9 @@ for i = 1:length(enzymedataSEC.enzyme)
 
 end
 
-%  ERAD should be only 10%  of total protein
-u = 0.1;
-E_sum(strcmp(SecComplex_func,'ERAD'),:) = E_sum(strcmp(SecComplex_func,'ERAD'),:)*0.1;
+%  ERAD should be only 30%  of total protein
+u = 0.2;
+E_sum(strcmp(SecComplex_func,'ERAD'),:) = E_sum(strcmp(SecComplex_func,'ERAD'),:)*0.3;
 
 % sum(V) <= Vsyn = kcat[E]
 % (mu + kdeq)*sum([E]) <= kcat[E0]
@@ -122,7 +138,7 @@ end
 
 kcat_tmp = (E_sum./E0).* enzymedataSEC.subunit_stoichiometry(:,1:length(E_sum(1,:)));
 
-enzymedataSEC.kcat = median(kcat_tmp,2,'omitnan')*(u+0.01);
+enzymedataSEC.kcat = median(kcat_tmp,2,'omitnan')*u*1.3; % 0.30 mean kdeg from the reference 
 %enzymedataSEC.kcat = min(kcat_tmp,[],2)*(u+0.042);
 enzymedataSEC.proteins = strrep(setdiff(unique(enzymedataSEC.subunit(:)),''),'_','-'); % get all proteins involved in the sec pathway
 

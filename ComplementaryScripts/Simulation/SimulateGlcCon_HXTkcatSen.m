@@ -7,7 +7,8 @@ load('enzymedata.mat');
 load('enzymedataSEC.mat');
 load('enzymedataDummyER.mat');
 load('enzymedataMachine.mat')
-
+mkdir('SimulateGlcCon_sen')
+cd SimulateGlcCon_sen
 %% Set model
 % set medium
 model = setMedia(model,1);% minimal media (Delft media)
@@ -19,7 +20,7 @@ model = changeRxnBounds(model,'r_1992',-1000,'l');
 model = blockRxns(model);
 model = changeRxnBounds(model,'r_1634',0,'b');% acetate production
 model = changeRxnBounds(model,'r_1631',0,'b');% acetaldehyde production
-
+model = changeRxnBounds(model,'r_2033',0,'b');% pyruvate production
 %% Set optimization
 rxnID = 'r_1714'; %minimize glucose uptake rate
 osenseStr = 'Maximize';
@@ -38,7 +39,7 @@ hxt1rxnID = {'r_1166_10_complex'};
 kcathxt7 = 200*3600; %/h
 enzymedata.kcat(strcmp(enzymedata.enzyme,hxt1rxnID)) = kcathxt7;
 
-mumax = 0.35;
+mumax = 0.38;
 enzymedata_all = CombineEnzymedata(enzymedata,enzymedataSEC,enzymedataMachine,enzymedataDummyER);
 
 mu = mumax;
@@ -46,7 +47,7 @@ model_tmp = changeRxnBounds(model,'r_2111',mu,'b');
 disp(['mu = ' num2str(mu)]);
 fileName = writeLP(model_tmp,mu,f,f_unmodelER,osenseStr,rxnID,enzymedata_all,factor_k,num2str(mu*100));
 
-writeclusterfileLP(fileName,'sub_1')
+writeclusterfileLP({fileName},'sub_1')
 
 % read the result
 [sol_obj,sol_status,sol_full] = readSoplexResult([fileName,'.out'],model);

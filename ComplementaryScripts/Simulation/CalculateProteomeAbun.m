@@ -1,11 +1,11 @@
 % this function is to calculate wthether the ER protein has a certain
 % volume, by calculating the the abundance in different proteome data
-%% ratio
+%% ratio percent of the total proteome
 %0.053 for SECmachine and 0.1708 for ERprotein,
 %0.0174 for ERmembrane
 % 9.138417263261976e-03 of all HXTs ratio from the glucose phase QC3
 % 0.00271 for ERAD_proteinAbun
-% 0.0011 for translocator
+% 0.00025 8.22e-5 for translocator from SCE_petri
 
 [~,~,proteome] = xlsread('Proteome_collected.xlsx');
 
@@ -18,7 +18,8 @@ load('enzymedataSEC.mat')
 SecMachine = enzymedataSEC.proteins;
 load('enzymedata.mat')
 ERmembrane = enzymedata.proteins(strcmp(enzymedata.proteinLoc,'erm'));
-translocator = {'YLR378C','YBR283C','YIL030C','YOL013C'}; % SEC61 SSH1 DOA10 HRD1
+translocator = {'YIL030C','YOL013C'}; % SEC61 SSH1 DOA10 HRD1
+transloc_complex = {'YBR201W';'YDR057W';'YER100W';'YIL030C';'YLR207W';'YML029W';'YMR022W';'YMR264W';'YOL013C'};
 %ERmembrane = protein_info(strcmp(protein_info(:,10),'erm'),2); % er membrane proteins
 %ERmembrane = intersect(ERmembrane,ERmembranemodel);
 % calculateHXTabun
@@ -51,12 +52,12 @@ for i = 1:length(study)
     [~,idx4] = ismember(HXTs,gene_id);
     [~,idx5] = ismember(translocator,gene_id);
     [~,idx6] = ismember(ERAD_protein,gene_id);
-    ERproteinAbun = [ERproteinAbun,sum(abun(idx(idx~=0),:))./sum(abun)];
-    SecMachineAbun = [SecMachineAbun,sum(abun(idx2(idx2~=0),:))./sum(abun)];
-    ERmembraneAbun = [ERmembraneAbun,sum(abun(idx3(idx3~=0),:))./sum(abun)];
-    HXTAbun = [HXTAbun,sum(abun(idx4(idx4~=0),:))./sum(abun)];
-    translocatorAbun = [translocatorAbun,sum(abun(idx5(idx5~=0),:))./sum(abun)];
-    ERAD_proteinAbun = [ERAD_proteinAbun,sum(abun(idx6(idx6~=0),:))./sum(abun)];
+    ERproteinAbun = [ERproteinAbun,sum(abun(idx(idx~=0),:),1)./sum(abun,1)];
+    SecMachineAbun = [SecMachineAbun,sum(abun(idx2(idx2~=0),:),1)./sum(abun,1)];
+    ERmembraneAbun = [ERmembraneAbun,sum(abun(idx3(idx3~=0),:),1)./sum(abun,1)];
+    HXTAbun = [HXTAbun,sum(abun(idx4(idx4~=0),:),1)./sum(abun,1)];
+    translocatorAbun = [translocatorAbun,sum(abun(idx5(idx5~=0),:),1)./sum(abun,1)];
+    ERAD_proteinAbun = [ERAD_proteinAbun,sum(abun(idx6(idx6~=0),:),1)./sum(abun,1)];
     id = [id,repmat(study(i),1,length(proteome_tmp(1,:)))];
     id2 = [id2,condition_id];
 end
@@ -72,13 +73,13 @@ pax_protein_list = raw_abd(2:end,2);
  [~,idx5] = ismember(translocator,pax_protein_list);
      [~,idx6] = ismember(ERAD_protein,pax_protein_list);
 
-ERproteinAbun = [ERproteinAbun,sum(pax_abundance(idx(idx~=0),:))./sum(pax_abundance)];
+ERproteinAbun = [ERproteinAbun,sum(pax_abundance(idx(idx~=0),:),1)./sum(pax_abundance,1)];
 id = [id,{'paxDb'}];
 id2 = [id2,{'paxDb'}];
-ERmembraneAbun = [ERmembraneAbun,sum(pax_abundance(idx3(idx3~=0),:))./sum(pax_abundance)];
-SecMachineAbun = [SecMachineAbun,sum(pax_abundance(idx2(idx2~=0),:))./sum(pax_abundance)];
-HXTAbun = [HXTAbun,sum(pax_abundance(idx4(idx4~=0),:))./sum(pax_abundance)];
-translocatorAbun = [translocatorAbun,sum(pax_abundance(idx5(idx5~=0),:))./sum(pax_abundance)];
-ERAD_proteinAbun = [ERAD_proteinAbun,sum(pax_abundance(idx6(idx6~=0),:))./sum(pax_abundance)];
+ERmembraneAbun = [ERmembraneAbun,sum(pax_abundance(idx3(idx3~=0),:),1)./sum(pax_abundance,1)];
+SecMachineAbun = [SecMachineAbun,sum(pax_abundance(idx2(idx2~=0),:),1)./sum(pax_abundance,1)];
+HXTAbun = [HXTAbun,sum(pax_abundance(idx4(idx4~=0),:),1)./sum(pax_abundance,1)];
+translocatorAbun = [translocatorAbun,sum(pax_abundance(idx5(idx5~=0),:),1)./sum(pax_abundance,1)];
+ERAD_proteinAbun = [ERAD_proteinAbun,sum(pax_abundance(idx6(idx6~=0),:),1)./sum(pax_abundance,1)];
 
-boxplot(translocatorAbun,id,'Symbol','o','OutlierSize',3,'Widths',0.7,'Colors',[56,108,176]/255);
+boxplot(ERAD_proteinAbun,id,'Symbol','o','OutlierSize',3,'Widths',0.7,'Colors',[56,108,176]/255);

@@ -22,6 +22,7 @@ model = blockRxns(model);
 model = changeRxnBounds(model,'r_1634',0,'b');% acetate production
 model = changeRxnBounds(model,'r_1631',0,'b');% acetaldehyde production
 model = changeRxnBounds(model,'r_1810',0,'b');% glycine production
+model = changeRxnBounds(model,'r_2033',0,'b');% pyruvate production
 %% Set optimization
 rxnID = 'r_1714'; %minimize glucose uptake rate
 osenseStr = 'Maximize';
@@ -37,7 +38,7 @@ f_unmodelER = tot_protein * 0.046;
 clear tot_protein f_modeled_protein;
 factor_k = 1;
 %% Solve LPs
-mu_list = [0.1 0.2 0.3 0.32 0.33 0.35 0.36 0.37];
+mu_list = [0.1 0.2 0.3 0.35 0.37 0.38 0.39 0.4];
 enzymedata_all = CombineEnzymedata(enzymedata,enzymedataSEC,enzymedataMachine,enzymedataDummyER);
 model.ub(contains(model.rxns,'dilution_misfolding')) = 0; % block the accumulation in the model;
 
@@ -49,7 +50,6 @@ for i = 1:length(mu_list)
 %     model_tmp = changeBiomass(model,f_carbon,'r_4041','s_3718[c]');
      model_tmp = changeRxnBounds(model,'r_2111',mu,'b');
     disp(['mu = ' num2str(mu)]);
-    %fileName = writeLP(model_tmp,mu,f,f_mito,f_unmodelER,osenseStr,rxnID,enzymedata_all,factor_k,num2str(mu*100));
     fileName = writeLP(model_tmp,mu,f,f_unmodelER,osenseStr,rxnID,enzymedata_all,factor_k,num2str(mu*100));
     allName{i} = fileName;
 end
