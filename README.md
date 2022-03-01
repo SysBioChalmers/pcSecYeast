@@ -45,3 +45,25 @@ This repository is administered by Feiran Li ([@feiranl](https://github.com/feir
 
 For generate the figures in this paper, please download the intemediate file from the [Zenode](https://zenodo.org/record/5593654#.YXMoai8RrmF), and run the correponding function in [ComplementaryScripts/Simulation](https://github.com/SysBioChalmers/pcSecYeast/tree/main/ComplementaryScripts/Simulation)
 For generatre the pcSecYeast model, run [buildModel](https://github.com/SysBioChalmers/pcSecYeast/tree/main/ComplementaryScripts).
+
+## Manual
+
+This manual describes how the data were collected, how the model was reconstructed, and how the optimization problem was generated.
+
+## Main collected information
+[TableS1.xlsx](https://github.com/SysBioChalmers/pcSecYeast/blob/main/ComplementaryData/TableS1.xlsx)
+contains all collected information.
+ * Annotation & Annotation_extra: gene names and sequence information of all S. cerevisiae proteins.
+ * Machinery: proteins which makes ribosome, ribosome assembly complex and proteasome complex
+ * Secretory: proteins which makes secretory machinery complexes
+ * Secretory_ref: references for how those secretory complexes are summarized
+ * kdeg: kdeg information collected from reference ([PMID: 33176155](https://pubmed.ncbi.nlm.nih.gov/33176155/))
+ * kcat_info_metabolic: kcat values used in the metabolic part
+ * kcat_info_sectory: kcat values used in the secretory part
+ * kcat_info_machinery: kcat values used in the ribosome, ribosome assembly and proteasome
+
+[Protein_information.xlsx](https://github.com/SysBioChalmers/pcSecYeast/blob/main/ComplementaryData/Protein_Information.xlsx)
+Contains the Protein Specific Information Matrix (PSIM) data for all proteins in S. cerevisiae, including whether the protein is processed by secretory pathway, the existence of the signal peptide, number of disulfide bond sites, N-glycosylation sites, O-glycosylation sites, transmembrane domains, GPI sites, protein localization, protein amino acid sequence and signal peptide sequence. The PSIM data were collected from literature3 and UniPort database4.
+
+
+
