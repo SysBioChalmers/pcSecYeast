@@ -43,7 +43,7 @@ This repository is administered by Feiran Li ([@feiranl](https://github.com/feir
 
 ## Usage
 
-For generate the figures in this paper, please download the intemediate file from the [Zenode](https://zenodo.org/record/5593654#.YXMoai8RrmF), and run the correponding function in [ComplementaryScripts/Simulation](https://github.com/SysBioChalmers/pcSecYeast/tree/main/ComplementaryScripts/Simulation)
+For generate the figures in this paper, please download the intemediate file from the [Zenode](https://zenodo.org/record/6320643), and run the correponding function in [ComplementaryScripts/Simulation](https://github.com/SysBioChalmers/pcSecYeast/tree/main/ComplementaryScripts/Simulation)
 For generatre the pcSecYeast model, run [buildModel](https://github.com/SysBioChalmers/pcSecYeast/tree/main/ComplementaryScripts).
 
 ## Manual
