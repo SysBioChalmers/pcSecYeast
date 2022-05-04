@@ -1,6 +1,6 @@
 %% SimulateTP
 % max production rate under various growth rates on minimal media
-TP = {'Amylase';'Insulin';'HSA';'Hemoglobincomplex';'Humantransferin';'BGL';'PHO';'HGCSF';'Insulin2'};
+TP = {'Amylase';'Insulin';'HSA';'Hemoglobincomplex';'Humantransferin';'BGL';'PHO';'HGCSF';'Insulin2'}; % Insulin2 is the Insulin without Disulfide bonds
 
 mulist = [0.02:0.02:0.25,0.25:0.005:0.3,0.32 0.34 0.36 0.38 0.4];
 

@@ -37,7 +37,7 @@ model = model_split;
 clear model_updated model_split;
 
 %% reformulate the Metabolic part
-load('ProteinSequence.mat');
+load('Protein_Sequence.mat');
 % Add complex formation reactions based on protein stoichiometry
 % promiscuous = findPromiscuous(model_split);
 load('Protein_stoichiometry.mat');% obtained from pdbe see Data for detail info

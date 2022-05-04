@@ -1,6 +1,6 @@
 %% Figure 3A 3B
 %% CPY
-cd SimulateCPY_res
+cd Results/SimulateCPY_res
 load('enzymedata.mat')
 load('enzymedataMachine.mat')
 load('enzymedataSEC.mat')
@@ -124,12 +124,8 @@ xticklabels({'50%deg','100%deg','100%acc5','100%acc10','100%acc20'})
 ylim([0 0.1]);
 set(gca,'FontSize',6,'FontName','Helvetica');
 ylabel('Maximal growth reduction %','FontSize',7,'FontName','Helvetica','Color','k');
-xlabel('CPY expression with 0.1% of total proteome','FontSize',7,'FontName','Helvetica');
+xlabel('CPY expression','FontSize',7,'FontName','Helvetica');
 
-set(gcf,'position',[0 300 150 130]);
-set(gca,'position',[0.25 0.25 0.55 0.65]);
-
-ylabel(['CPY expression rate',char(13,10)','[mmol/gDW/h]'],'FontSize',7,'FontName','Helvetica');
 set(gcf,'position',[0 300 150 130]);
 set(gca,'position',[0.25 0.25 0.55 0.65]);
 
@@ -137,7 +133,7 @@ set(gca,'position',[0.25 0.25 0.55 0.65]);
 rxnName = 'transport GSSG from c to er';
 [~,idx] = ismember(rxnName,model.rxnNames);
 Trans_flux = fluxes(idx,:);
-h = bar(sort(abs(Trans_flux)),'LineWidth',0.75,'FaceColor',[55,126,184]/255);
+h = bar(abs(Trans_flux),'LineWidth',0.75,'FaceColor',[55,126,184]/255);
 xticklabels({'50%deg','100%deg','100%acc5','100%acc10','100%acc20'})
 ylim([0 6e-3])
 set(gca,'FontSize',6,'FontName','Helvetica');
@@ -156,7 +152,7 @@ id = {'Kar2','Pdi1'};
 abun_tmp = abun_protein(idx,:);
 for i = 1:2
     figure
-    h = bar(sort(abs(abun_tmp(i,:))),'LineWidth',0.75,'FaceColor',[55,126,184]/255);
+    h = bar(abs(abun_tmp(i,:)),'LineWidth',0.75,'FaceColor',[55,126,184]/255);
     xticklabels({'50%deg','100%deg','100%acc5','100%acc10','100%acc20'})
     set(gca,'FontSize',6,'FontName','Helvetica');
     set(gcf,'position',[0 200 150 150]);

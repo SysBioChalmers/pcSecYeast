@@ -12,6 +12,7 @@ targetProteins = {'Amylase';'Insulin';'HSA';'Hemoglobincomplex';'Humantransferin
 figure
 hold on
 for j = 1:length(targetProteins)
+    j
 load(['model',targetProteins{j},'.mat'])
 
 % constrain the glc eth gly ace in the model; decrease the mu from 0.35 to

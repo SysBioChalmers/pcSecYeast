@@ -1,10 +1,10 @@
-%% Targets identification 
+%% Targets identification
 
 targetProteins = {'Amylase';'Insulin';'HSA';'Hemoglobincomplex';'Humantransferin';'BGL';'PHO';'HGCSF'};
 
-cd SimulateTP_SDAA_res/;
-    res_list = cell('');
-%% reference 
+cd Results/SimulateTP_SDAA_res/;
+res_list = cell('');
+%% reference
 load('pcSecYeast.mat')
 load('fluxes_ref.mat')
 mu = round(fluxes(ismember(model.rxns,'r_2111'),:),4);
@@ -18,7 +18,7 @@ fluxes = fluxes(:,nonzeroidx);
 mu = round(fluxes(ismember(model.rxns,'r_2111'),:),4);
 idx_max = find(mu == max(mu));
 idx_min = find(mu == min(mu));
-    
+
 res_ref.genelist = cell(0,1);
 res_ref.r = zeros(0,1);
 res_ref.p = zeros(0,1);
@@ -42,17 +42,17 @@ for res_corted = 1:length(abun_protein_id)
     end
 end
 % remove ribosome
-    load('enzymedataMachine.mat')
-    ribosomegene = unique(enzymedataMachine.subunit(1:2,:));
-    ribosomegene = setdiff(ribosomegene,'');
-    [~,idx] = ismember(ribosomegene,res_ref.genelist);
-    res_ref.genelist(idx) = [];
-    res_ref.r(idx) = [];
-    res_ref.p(idx) = [];
-    res_ref.i(idx) = [];
-    res_ref.ratio(idx) = [];
-    res_ref.pro_abun(idx) = [];
-    res_ref.slope(idx) = [];
+load('enzymedataMachine.mat')
+ribosomegene = unique(enzymedataMachine.subunit(1:2,:));
+ribosomegene = setdiff(ribosomegene,'');
+[~,idx] = ismember(ribosomegene,res_ref.genelist);
+res_ref.genelist(idx) = [];
+res_ref.r(idx) = [];
+res_ref.p(idx) = [];
+res_ref.i(idx) = [];
+res_ref.ratio(idx) = [];
+res_ref.pro_abun(idx) = [];
+res_ref.slope(idx) = [];
 % label the genes
 res_ref.priority(1:length(res_ref.r)) = 0;
 idx = find(res_ref.r > 0.9 & res_ref.ratio > 1.2);
@@ -64,19 +64,19 @@ res_ref.priority(idx) = -1;% reverse with growth
 % reference
 %% target proteins
 for i = 1:length(targetProteins)
-        display([num2str(i) '/' num2str(length(targetProteins))]);
-  
+    display([num2str(i) '/' num2str(length(targetProteins))]);
+    
     load(['model',targetProteins{i},'.mat']);
-     load(['fluxes_',targetProteins{i},'.mat']);
+    load(['fluxes_',targetProteins{i},'.mat']);
     tp_ex = [targetProteins{i},' exchange']; % index the tp production rate
     
-     mu = round(fluxes(ismember(model.rxns,'r_2111'),:),4);
-     fluxes = fluxes(:,mu > 0.25);
-     mu = round(fluxes(ismember(model.rxns,'r_2111'),:),4);
+    mu = round(fluxes(ismember(model.rxns,'r_2111'),:),4);
+    fluxes = fluxes(:,mu > 0.25);
+    mu = round(fluxes(ismember(model.rxns,'r_2111'),:),4);
     [a,b] = sort(mu,'ascend');
     fluxes = fluxes(:,b);
     mu = round(fluxes(ismember(model.rxns,'r_2111'),:),4);
-
+    
     
     nonzeroidx = any(fluxes);
     fluxes = fluxes(:,nonzeroidx);
@@ -163,7 +163,7 @@ for i = 1:length(targetProteins)
     % difference between protein abundance/paxdb abundance
     res.difference = res.pro_abun./res.ref_abun;
     
- % check the state in reference condition without recombinant protein production
+    % check the state in reference condition without recombinant protein production
     [~,idx] = ismember(res.genelist,res_ref.genelist);
     res.refstate(idx~=0,1) = res_ref.priority(idx(idx ~=0));
     res.refstate(idx==0,1) = nan;
@@ -174,7 +174,7 @@ for i = 1:length(targetProteins)
     res.priority(idx) = 1;
     idx = find(res.r >= 0.99 & res.ratio > 1.2);
     res.priority(idx) = 2;
-       idx = find(res.r >= 0.99 & res.ratio > 1.2 & res.difference >= 1);
+    idx = find(res.r >= 0.99 & res.ratio > 1.2 & res.difference >= 1);
     res.priority(idx) = 3;
     idx = find(res.r >= 0.99 & res.ratio > 1.2 & res.difference >= 1 & cellfun(@isempty,res.homo)& cellfun(@isempty,res.complex));
     res.priority(idx) = 4;
@@ -182,7 +182,7 @@ for i = 1:length(targetProteins)
     res.priority(idx) = 0.5;
     idx = find(res.priority > 0 & isnan(res.refstate)); % those proteins only occurs when recombinant protein production
     res.priority(idx) =  res.priority(idx) + 0.5;
-
+    
     % priority rank for downregulation the lower, the better
     idx = find(res.r < -0.9 & res.ratio < 1);
     res.priority(idx) = -1;
@@ -199,16 +199,18 @@ for i = 1:length(targetProteins)
     
     
     t = table(res.genelist,res.priority,res.r,res.p,res.i,res.ratio,res.slope,res.pro_abun,res.ref_abun,res.difference,res.homo,res.met,res.complex,res.annot(:,1),res.annot(:,2),res.annot(:,3),res.annot(:,4),res.annot(:,5),res.annot(:,6),res.annot(:,7),res.annot(:,8),'VariableNames',{'protein' ,'priority','correlation', 'p_value','index_in_Model','ratio','slope','prot_abun(max_production)','ref_abun(paxdb)','abun_fold','homolougous_gene','metabolic/secretoy','complex/not',raw_anno{1,2:9}});
-    res_list(1:length(res.genelist(res.priority >= 3)),i) = res.genelist(res.priority >= 3);
-    res_listAnnotation(1:length(res.genelist(res.priority >= 3)),i) = res.annot(res.priority >= 3,3);
-    res_listFunc(1:length(res.genelist(res.priority >= 3)),i) = res.met(res.priority >= 3);
-%     res_list(1:length(res.genelist(res.priority == 1 |res.priority == 2|res.priority == 3 |res.priority == 4)),i) = res.genelist(res.priority == 1 |res.priority == 2|res.priority == 3 |res.priority == 4);
-%     res_listAnnotation(1:length(res.genelist(res.priority == 1 |res.priority == 2|res.priority == 3 |res.priority == 4)),i) = res.annot(res.priority == 1 |res.priority == 2|res.priority == 3 |res.priority == 4,3);
-%     res_listFunc(1:length(res.genelist(res.priority == 1 |res.priority == 2|res.priority == 3 |res.priority == 4)),i) = res.met(res.priority == 1 |res.priority == 2|res.priority == 3 |res.priority == 4);
-%      
-%     
-%     
-    writetable(t,[targetProteins{i},'Target_abun_new.txt'],'Delimiter','\t','QuoteStrings',false,'WriteRowNames',true)
+    %    res_list(1:length(res.genelist(res.priority >= 3)),i) = res.genelist(res.priority >= 3);
+    %    res_listAnnotation(1:length(res.genelist(res.priority >= 3)),i) = res.annot(res.priority >= 3,3);
+    %    res_listFunc(1:length(res.genelist(res.priority >= 3)),i) = res.met(res.priority >= 3);
+    res_list(1:length(res.genelist(res.priority >= 1)),i) = res.genelist(res.priority >= 1);
+    res_listAnnotation(1:length(res.genelist(res.priority >= 1)),i) = res.annot(res.priority >= 1,3);
+    res_listFunc(1:length(res.genelist(res.priority >= 1)),i) = res.met(res.priority >= 1);
+    %
+    %
+    if i == 1
+        save('res_amylase.mat','res'); % for the response figure
+    end
+    writetable(t,[targetProteins{i},'Target_abun.txt'],'Delimiter','\t','QuoteStrings',false,'WriteRowNames',true)
 end
 save('res_geneList.mat','res_list','targetProteins');
 
@@ -232,7 +234,7 @@ cata = unique(res_corted(:,2));
 for i = 1:length(targetProteins)
     tmp = res_list(:,i);
     tmp(cellfun(@isempty,tmp)) = [];
-
+    
     [~,idx] = ismember(tmp,res_corted(:,1));
     tmp_cata = tabulate(res_corted(idx,2));
     [~,idx] = ismember(tmp_cata(:,1),cata);
@@ -261,18 +263,18 @@ color = [228,26,28;55,126,184;77,175,74;152,78,163;255,127,0;255,255,51;166,86,4
 figure
 hold on
 for i = 1:length(targetProteins)
-display([num2str(i) '/' num2str(length(targetProteins))]);
-load(['model',targetProteins{i},'.mat']);
-load(['fluxes_',targetProteins{i},'.mat']);
-nonzeroidx = any(fluxes);
-fluxes = fluxes(:,nonzeroidx);
-tp_ex = [targetProteins{i},' exchange'];
-mu = round(fluxes(ismember(model.rxns,'r_2111'),:),2);
-[mu,b] = sort(mu,'ascend');
-fluxes = fluxes(:,b);
-
-q_tp = fluxes(ismember(model.rxns,tp_ex),:);
-plot(mu,q_tp,'-','LineWidth',0.75,'Color',color(i,:))
+    display([num2str(i) '/' num2str(length(targetProteins))]);
+    load(['model',targetProteins{i},'.mat']);
+    load(['fluxes_',targetProteins{i},'.mat']);
+    nonzeroidx = any(fluxes);
+    fluxes = fluxes(:,nonzeroidx);
+    tp_ex = [targetProteins{i},' exchange'];
+    mu = round(fluxes(ismember(model.rxns,'r_2111'),:),2);
+    [mu,b] = sort(mu,'ascend');
+    fluxes = fluxes(:,b);
+    
+    q_tp = fluxes(ismember(model.rxns,tp_ex),:);
+    plot(mu,q_tp,'-','LineWidth',0.75,'Color',color(i,:))
 end
 set(gcf,'position',[0 200 150 150]);
 set(gca,'position',[0.2 0.2 0.6 0.6]);

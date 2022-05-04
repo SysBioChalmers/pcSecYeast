@@ -1,4 +1,4 @@
-cd SimulateProteinCost_res/
+cd Results/SimulateProteinCost_res/
 
 % analyze ProteinCost
 [~,~,protein_info] = xlsread('Protein_Information.xlsx');
@@ -95,9 +95,9 @@ pax_protein_list = raw_abd(2:end,1);
 [~,idx] = ismember(strrep(ERprotein,'new',''),pax_protein_list);
 m = [];
 m(idx~=0,1) = pax_abundance(idx(idx~=0));
-idx = find(m ~= 0 & ~isnan(m)&res_glc_final(:,1) ~= 0);
+idx = find(m ~= 0 & ~isnan(m)&res_glc_final(:,1,2) ~= 0);
 m = m(idx);
-n = res_glc_final(idx,1);
+n = res_glc_final(idx,1,2);
 [RHO4,PVAL4] = corr(log10(abs(n)),log10(m),'Type','Pearson');
 h = scatter(log10(abs(n)),log10(m),20,'o','filled','LineWidth',0.75,'MarkerEdgeColor',[178, 24, 43]/255,'MarkerFaceColor',[178, 24, 43]/255,'MarkerFaceAlpha',0.3);
 legend off;
@@ -110,76 +110,3 @@ set(gcf,'position',[0 200 150 150]);
 text(2.5,1.75,['p = ' num2str(round(PVAL4,3))],'FontSize',6,'FontName','Helvetica','Color','k')
 
 
-hxt = {'HXT1';'HXT2';'HXT3';'HXT4';'HXT7'};
-hxtrxnID = {'r_1166_10';'r_1166_17';'r_1166_5';'r_1166_9';'r_1166_3'}; % glucose transporter rxn
-load('pcSecYeast.mat')
-[~,idx] = ismember(hxtrxnID,model.rxns);
-model.grRules(idx)
-[~,idx] = ismember(ans,strrep(ERprotein,'new',''));
-res_slope_glc(idx,:,:)
-
-% [num_abd, raw_abd, ~] = xlsread('protein_abundance.xlsx','paxdb');
-% pax_abundance = num_abd(:,5);
-% pax_protein_list = raw_abd(3:end,14);
-% [~,idx] = ismember(strrep(ERprotein,'new',''),pax_protein_list);
-% m = []
-% m(idx~=0,1) = pax_abundance(idx(idx~=0));
-% m = m(1:400)
-% idx = find(m ~= 0 & ~isnan(m)&res_glc_final(:,1) ~= 0)
-% m = m(idx)
-% n = res_glc_final(idx,1)
-% [RHO4,PVAL4] = corr(log10(abs(n)),log10(m),'Type','Pearson')
-% [~,idx] = ismember(strrep(ERprotein,'new',''),pax_protein_list);
-% m = []
-% m(idx~=0,1) = pax_abundance(idx(idx~=0));
-% m = m(1:400)
-% idx = find(m ~= 0&~isnan(m)&res_slope_final(:,1) ~= 0)
-% m = m(idx)
-% n = res_slope_final(idx,1)
-% [RHO4,PVAL4] = corr(log10(m),log10(abs(n)),'Type','Pearson')
-% 
-% 
-% [num_abd, raw_abd, ~]=xlsread('Proteome_collected.xlsx','mRNA_petri');
-% pax_abundance = num_abd(:,5);
-% pax_protein_list = raw_abd(2:end,1);
-% [~,idx] = ismember(strrep(ERprotein,'new',''),pax_protein_list);
-% m = []
-% m(idx~=0,1) = pax_abundance(idx(idx~=0));
-% m = m(1:400)
-% idx = find(m ~= 0 & ~isnan(m)&res_glc_final(:,1) ~= 0)
-% m = m(idx)
-% n = res_glc_final(idx,1)
-% [RHO4,PVAL4] = corr(log10(abs(n)),log10(m),'Type','Pearson')
-% [~,idx] = ismember(strrep(ERprotein,'new',''),pax_protein_list);
-% m = []
-% m(idx~=0,1) = pax_abundance(idx(idx~=0));
-% m = m(1:400)
-% idx = find(m ~= 0&~isnan(m)&res_slope_final(:,1) ~= 0)
-% m = m(idx)
-% n = res_slope_final(idx,1)
-% [RHO4,PVAL4] = corr(log10(m),log10(abs(n)),'Type','Pearson')
-
-% [num_abd,raw_abd,~] = xlsread('Proteome_collected.xlsx','mRNA_Jianye2021')
-% for i = 1:length(num_abd(1,:))
-% pax_abundance = num_abd(:,i);
-% pax_protein_list = raw_abd(2:end,1);
-% [~,idx] = ismember(strrep(ERprotein,'new',''),pax_protein_list);
-% m = []
-% m(idx~=0,1) = pax_abundance(idx(idx~=0));
-% m = m(1:400)
-% idx = find(m ~= 0 & ~isnan(m)&res_glc_final(:,1) ~= 0)
-% m = m(idx)
-% n = res_glc_final(idx,1)
-% [RHO4,PVAL4] = corr(log10(abs(1./n)),log10(m),'Type','Pearson')
-% [~,idx] = ismember(strrep(ERprotein,'new',''),pax_protein_list);
-% m = []
-% m(idx~=0,1) = pax_abundance(idx(idx~=0));
-% m = m(1:400)
-% idx = find(m ~= 0&~isnan(m)&res_slope_final(:,1) ~= 0)
-% m = m(idx)
-% n = res_slope_final(idx,1)
-% [RHO4,PVAL4] = corr(log10(abs(1./n)),log10(m),'Type','Pearson')
-% x(i,1) = RHO4
-% x(i,2) = PVAL4
-% x(i,3) = length(m)
-% end

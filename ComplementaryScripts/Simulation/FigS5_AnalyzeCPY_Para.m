@@ -1,4 +1,4 @@
-cd SimulateCPY_Para_res/
+cd Results/SimulateCPY_Para_res/
 load('enzymedata.mat')
 load('enzymedataMachine.mat')
 load('enzymedataSEC.mat')

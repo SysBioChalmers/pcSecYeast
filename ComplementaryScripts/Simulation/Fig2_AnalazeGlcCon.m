@@ -1,7 +1,7 @@
 %% plot figure 2A and Figure 2B
 
 %% result for GlcCon
-cd SimulateGlcCon_res/
+cd Results/SimulateGlcCon_res/
 res = dir('res*.mat');
 res = {res.name};
 
@@ -118,7 +118,7 @@ hxt = {'Hxt1';'Hxt2';'Hxt3';'Hxt4';'Hxt7'};
 hxtrxnID = {'r_1166_10';'r_1166_17';'r_1166_5';'r_1166_9';'r_1166_3'}; % glucose transporter rxn
 Km_hxt = [110;1.5;34;9.3;2.5]; % bionumber 110954 110739 PMID 2482015 10336421 https://doi.org/10.1101/2020.06.22.165753 table
 hxt = {'YHR094C';'YMR011W';'YDR345C';'YHR092C';'YDR342C'};
-kcatmax = [1012 53 479 155 197];
+kcatmax = [1012 53 479 155 197]*3600; %1/h
 glccost = [3002.6 3145.6
 2829.9 2963.2
 3082.7 3232.0
@@ -145,7 +145,7 @@ end
 set(gca,'FontSize',6,'FontName','Helvetica');
 
 xlabel('Residue glucose concentration [mM] log10','FontSize',7,'FontName','Helvetica','Color','k');
-ylabel('Glucose cost for sustain certain uptake','FontSize',7,'FontName','Helvetica','Color','k');
+ylabel('Secretory cost in log10 scale [mmol glucose]','FontSize',7,'FontName','Helvetica','Color','k');
 box on
 set(gcf,'position',[0 200 150 150]);
 set(gca,'position',[0.2 0.4 0.6 0.6]);

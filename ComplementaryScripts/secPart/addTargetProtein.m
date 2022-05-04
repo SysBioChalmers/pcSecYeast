@@ -9,7 +9,7 @@ if nargin < 4
     fakeProteinInfo = [];
 end
 % this function is to add
-load('ProteinSequence.mat');
+load('Protein_Sequence.mat');
 [~,~,protein_info] = xlsread('TargetProtein.xlsx','protein_info');
 TPall.seq = protein_info(2:end,11);
 TPall.id = protein_info(2:end,2);
