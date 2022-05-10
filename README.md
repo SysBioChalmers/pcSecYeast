@@ -8,7 +8,7 @@
 
 * Brief Model Description:
 
-This repository contains the current consensus consensus proteome constrained genome scale secretory model of _Saccharomyces cerevisiae_, which expands the metabolic model with protein translation, post-translational modifiaction and secretion process.
+This repository contains the current consensus proteome constrained genome scale secretory model of _Saccharomyces cerevisiae_, which expands the metabolic model with protein translation, post-translational modifiaction and secretion process.
 
 * Model KeyWords:
 
