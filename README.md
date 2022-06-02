@@ -27,7 +27,7 @@ This repository is administered by Feiran Li ([@feiranl](https://github.com/feir
 
 ## Citation
 
-- Currently, please cite the preprint paper "[Genome scale modeling of the protein secretory pathway reveals novel targets for improved recombinant protein production in yeast](https://doi.org/10.1101/2021.10.16.464630)"
+- Currently, please cite the paper "[Genome scale modeling of the protein secretory pathway reveals novel targets for improved recombinant protein production in yeast](https://www.nature.com/articles/s41467-022-30689-7)"
 
 
 ## Installation
