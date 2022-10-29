@@ -37,6 +37,7 @@ This repository is administered by Feiran Li ([@feiranl](https://github.com/feir
 * Matlab user:
   * A functional Matlab installation (MATLAB 7.3 or higher).
   * The [COBRA toolbox for MATLAB](https://github.com/opencobra/cobratoolbox).
+  * [RAVEN toolbox](https://github.com/SysBioChalmers/RAVEN)
   * solver [SoPlex](https://soplex.zib.de).
 
 
