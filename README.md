@@ -49,7 +49,7 @@ For generatre the pcSecYeast model, run [buildModel](https://github.com/SysBioCh
 
 ## Manual
 
-This manual describes how the data were collected, how the model was reconstructed, and how the optimization problem was generated.
+This [manual](https://github.com/SysBioChalmers/pcSecYeast/tree/main/doc) describes how the data were collected, how the model was reconstructed, and how the optimization problem was generated.
 
 ## Main collected information
 [TableS1.xlsx](https://github.com/SysBioChalmers/pcSecYeast/blob/main/ComplementaryData/TableS1.xlsx)
